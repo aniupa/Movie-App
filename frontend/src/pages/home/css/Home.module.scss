@@ -1,0 +1,65 @@
+
+
+
+.container {
+  
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 40px;
+  .heading {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 30px;
+  }
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    .card {
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+      }
+      .rank {
+        font-size: 18px;
+        font-weight: bold;
+        width: 40px;
+        color: #1f1f1f;
+      }
+      .poster {
+        width: 60px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin-right: 16px;
+      }
+
+      .details {
+        flex: 1;
+
+        h2 {
+          font-size: 18px;
+          margin: 0;
+        }
+        .meta {
+          color: #666;
+          font-size: 14px;
+          margin: 4px 0;
+        }
+
+        .rating {
+          font-size: 14px;
+          font-weight: 600;
+          color: #f5c518; // IMDb yellow
+        }
+      }
+    }
+  }
+}
