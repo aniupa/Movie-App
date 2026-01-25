@@ -47,36 +47,11 @@ const movieSchema = new mongoose.Schema(
       required: true
     },
 
-    // IMDb ID (optional but useful)
-    // imdbId: {
-    //   type: String,
-    //   unique: true,
-    //   sparse: true
-    // },
-
-    // // Genre list
-    // genres: {
-    //   type: [String],
-    //   default: []
-    // },
-
-    // // Movie Director
-    // director: {
-    //   type: String,
-    //   trim: true
-    // },
-
-    // // Cast list
-    // cast: {
-    //   type: [String],
-    //   default: []
-    // },
-
     // Who added the movie (Admin reference)
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
-      required: true
+      // required: true
     },
 
     // Soft delete support
@@ -94,6 +69,12 @@ const movieSchema = new mongoose.Schema(
 movieSchema.index({
   title: "text",
   description: "text"
-});
+},{weights:{
+  title:5,description:1
+},name:'MovieTextIndex'});
+
+movieSchema.index({ isDeleted: 1, createdAt: -1 });
+movieSchema.index({ isDeleted: 1, rating: -1 });
+movieSchema.index({ isDeleted: 1, releaseDate: -1 });
 
 export const movieModel = mongoose.model("Movie", movieSchema);

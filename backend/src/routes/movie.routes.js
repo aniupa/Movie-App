@@ -1,6 +1,5 @@
 import express from "express";
-import { isAdmin } from "../middleware/admin.middleware.js";
-import { auth } from "../middleware/auth.middleware.js";
+import { auth,isAdmin } from "../middleware/auth.middleware.js";
 import {getAllMoviesController,sortMoviesController,searchMoviesController,getMovieByIdController,updateMoviesController,deleteMoviesController,createMoviesController} from '../controller/movie.controller.js'
 const router = express();
 

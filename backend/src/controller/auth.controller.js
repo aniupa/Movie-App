@@ -3,25 +3,25 @@ import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cookies from "cookie-parser";
+import { ApiError } from "../utlis/ApiError.js";
 
 dotenv.config();
-
 
 const generateToken = (user) => {
   return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET);
 };
 
-export async function registerUserController(req, res) {
+export async function registerUserController(req, res,next) {
   try {
     const { username, email, password } = req.body;
 
     const isUserExists = await userModel.findOne({ email });
     if (isUserExists) {
-      return res.status(400).json({ message: "user already exists" });
+      throw new ApiError(400, "user already exists");
     }
-let role='user';
+    let role = "user";
     if (email === process.env.ADMIN_EMAIL) {
-       role = "admin";
+      role = "admin";
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -30,7 +30,7 @@ let role='user';
       username,
       email,
       password: hashedPassword,
-       role,
+      role,
     });
     const token = generateToken(user);
     res.cookie("token", token);
@@ -46,22 +46,23 @@ let role='user';
       token,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 }
 
-export async function loginUserController(req, res) {
+export async function loginUserController(req, res,next) {
   try {
     const { email, password } = req.body;
     const user = await userModel.findOne({ email }).select("+password");
 
-    if (!user)
-      return res.status(400).json({ message: "invalid email or password" });
+    if (!user){
+      throw new ApiError(400, "invalid email or password");}
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "invalid email or password" });
+      throw new ApiError(401, "invalid email or password");
+
     }
 
     const token = generateToken(user);
@@ -79,10 +80,8 @@ export async function loginUserController(req, res) {
       // token,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
-
-  
 }
 
 export async function logout(req, res) {
@@ -91,4 +90,3 @@ export async function logout(req, res) {
     message: " logged out  successfully",
   });
 }
-
