@@ -1,51 +1,42 @@
+import { movieModel } from "../models/movie.model.js";
+import { getPagination } from "../utlis/pagination.js";
+import { SORTABLE_FIELDS } from "../constants/sortableFields.js";
+
 export const searchMoviesService = async ({
-  query,
-    page = 1,
-    limit = 10,
-  sortBy = "relevance",
+  search,
+  page,
+  limit,
+  sortBy,
+  order,
 }) => {
-    const skip = (page - 1) * limit;
+  const filter = search?.trim() ? { $text: { $search: search } } : {};
+const safeOrder = order === "asc" ? 1 : -1;
 
-  const filter = {
-    isDeleted: false,
-  };
+  const { page: safePage, skip, limit: safeLimit } = getPagination(page, limit);
 
-  // Add text search only if query exists
-  if (query) {
-    filter.$text = { $search: query };
-  }
-
-  const projection = query ? { score: { $meta: "textScore" } } : {};
-
-  let sort = { createdAt: -1 };
-
-  if (query && sortBy === "relevance") {
-    sort = { score: { $meta: "textScore" } };
-  } else if (sortBy === "rating") {
-    sort = { rating: -1 };
-  } else if (sortBy === "releaseDate") {
-    sort = { releaseDate: -1 };
-  } else if (sortBy === "duration") {
-    sort = { duration: -1 };
-  } 
+  const safeSortBy = SORTABLE_FIELDS.includes(sortBy) ? sortBy : "rating";
+  const sortQuery = search
+    ? {
+        score: { $meta: "textScore" },
+        [safeSortBy]: safeOrder,
+      }
+    : { [safeSortBy]: safeOrder };
   
-  
-  const movies = await movieModel
-    .find(filter, projection)
-    .sort(sort)
-    .skip(skip)
-    .limit(limit)
-    .lean();
+  const [movies, total] = await Promise.all([
+    movieModel
+      .find(filter,search ? { score: { $meta: "textScore" } }:{})
+      .sort(sortQuery)
+      .skip(skip)
+      .limit(safeLimit)
+      .lean(),
 
-  const total = await movieModel.countDocuments(filter);
+    movieModel.countDocuments(filter),
+  ]);
 
   return {
     movies,
-    pagination: {
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-    },
+    total,
+    page: safePage,
+    limit: safeLimit,
   };
 };
