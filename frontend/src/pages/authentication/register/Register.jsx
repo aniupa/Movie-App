@@ -1,69 +1,88 @@
-import { useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
-  Card,
-  CardContent,
+  Container,
   TextField,
   Typography,
   Divider,
+  Link,
   InputAdornment,
   IconButton,
+  Paper,
 } from "@mui/material";
+import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-const Register = () => {
-  const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
+const RegisterPage = () => {
+  const { register, reset, handleSubmit } = useForm();
   const [showPassword, setShowPassword] = useState(false);
-
+  const navigate=useNavigate();
   const submitHandler = (data) => {
     console.log(data);
   };
-
-  const LoginPage = () => {
+   const loginPage = () => {
     navigate('/login');
   };
 
   return (
-    <Box
+    <Container
+      maxWidth="sm"
       sx={{
         minHeight: "100vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#fff",
       }}
     >
-      <Card sx={{ width: 380, boxShadow: 3 }}>
-        <CardContent>
-          {/* Logo */}
-          <Typography
-            variant="h4"
-            align="center"
-            sx={{ fontWeight: "bold", mb: 2 }}
-          >
-            IMDb
+      <Box width="100%">
+        {/* Logo */}
+        <Box textAlign="center" mb={2}>
+          
+           <Typography
+                      variant="h4"
+                      align="center"
+                      sx={{ fontWeight: "bold", mb: 2 }}
+                    >
+                      IMDb
+                    </Typography>
+        </Box>
+
+        {/* Card */}
+        <Paper
+          elevation={3}
+          sx={{
+            p: 3,
+            borderRadius: 2,
+          }}
+        >
+          
+          <Typography variant="h5" mb={2}>
+            Create account
           </Typography>
 
-          {/* Title */}
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Sign up
-          </Typography>
-
-          {/* Form */}
-          <form onSubmit={handleSubmit(submitHandler)}>
+          <Box component="form">
             <TextField
+              label="Your name"
+              placeholder="Username"
               fullWidth
-              label="Email or mobile phone number"
-              variant="outlined"
-              size="small"
-              {...register("email", { required: "email is required" })}
+              margin="normal"
+              {...register("username")}
               required
-              sx={{ mb: 2 }}
             />
+
+            <TextField
+              label="Email"
+              type="email"
+              fullWidth
+              margin="normal"
+              {...register("email")}
+              required
+            />
+
             <TextField
               fullWidth
               label="Password"
@@ -91,47 +110,37 @@ const Register = () => {
             />
 
             <Button
-              type="submit"
+              variant="contained"
               fullWidth
               sx={{
-                backgroundColor: "#f5c518",
-                color: "#000",
-                fontWeight: "bold",
+                mt: 2,
+                mb: 2,
+                backgroundColor: "#f0c14b",
+                color: "#111",
                 "&:hover": {
-                  backgroundColor: "#e6b800",
+                  backgroundColor: "#ddb347",
                 },
+                textTransform: "none",
+                fontWeight: 500,
               }}
+              onClick={handleSubmit(submitHandler)}
             >
-              Continue
+              Create your account
             </Button>
-          </form>
+          </Box>
 
-          {/* Terms */}
-          <Typography variant="body2" sx={{ mt: 2, fontSize: "12px" }}>
-            By continuing, you agree to IMDb's Conditions of Use and Privacy
-            Policy.
+          <Divider sx={{ my: 2 }} />
+
+          <Typography variant="body2">
+            Already have an account?{" "}
+            <Link onClick={loginPage} underline="hover">
+              Sign in
+            </Link>
           </Typography>
-
-          {/* Divider */}
-          <Divider sx={{ my: 3 }}>New to IMDb?</Divider>
-
-          {/* Create Account */}
-          <Button
-            fullWidth
-            variant="outlined"
-            sx={{
-              textTransform: "none",
-              borderColor: "#999",
-              color: "#000",
-            }}
-            onClick={() => LoginPage()}
-          >
-            Create your IMDb account
-          </Button>
-        </CardContent>
-      </Card>
-    </Box>
+        </Paper>
+      </Box>
+    </Container>
   );
 };
 
-export default Register;
+export default RegisterPage;

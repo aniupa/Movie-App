@@ -57,10 +57,10 @@ const Login = () => {
           <form onSubmit={handleSubmit(submitHandler)}>
             <TextField
               fullWidth
-              label="Email or mobile phone number"
+              label="Email"
               variant="outlined"
               size="small"
-              {...register("email", { required: "email is required" })}
+              {...register("email")}
               required
               sx={{ mb: 2 }}
             />
@@ -72,7 +72,7 @@ const Login = () => {
               type={showPassword ? "text" : "password"}
               {...register("password")}
               required
-              helperText="Passwords must be at least 6 characters."
+              // helperText="Passwords must be at least 6 characters."
               slotProps={{
                 input: {
                   endAdornment: (
@@ -107,10 +107,10 @@ const Login = () => {
           </form>
 
           {/* Terms */}
-          <Typography variant="body2" sx={{ mt: 2, fontSize: "12px" }}>
+          {/* <Typography variant="body2" sx={{ mt: 2, fontSize: "12px" }}>
             By continuing, you agree to IMDb's Conditions of Use and Privacy
             Policy.
-          </Typography>
+          </Typography> */}
 
           {/* Divider */}
           <Divider sx={{ my: 3 }}>New to IMDb?</Divider>
