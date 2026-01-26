@@ -8,10 +8,10 @@ import { ApiError } from "../utlis/ApiError.js";
 dotenv.config();
 
 const generateToken = (user) => {
-  return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET);
+  return jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 };
 
-export async function registerUserController(req, res,next) {
+export async function registerUserController(req, res, next) {
   try {
     const { username, email, password } = req.body;
 
@@ -50,19 +50,19 @@ export async function registerUserController(req, res,next) {
   }
 }
 
-export async function loginUserController(req, res,next) {
+export async function loginUserController(req, res, next) {
   try {
     const { email, password } = req.body;
     const user = await userModel.findOne({ email }).select("+password");
 
-    if (!user){
-      throw new ApiError(400, "invalid email or password");}
+    if (!user) {
+      throw new ApiError(400, "invalid email or password");
+    }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       throw new ApiError(401, "invalid email or password");
-
     }
 
     const token = generateToken(user);
@@ -89,4 +89,15 @@ export async function logout(req, res) {
   res.status(200).json({
     message: " logged out  successfully",
   });
+}
+
+export async function currentUserController(req, res, next) {
+  try {
+    res.status(200).json({
+      success: true,
+      user: req.user,
+    });
+  } catch (error) {
+    next(error);
+  }
 }

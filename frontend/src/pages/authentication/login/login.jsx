@@ -1,16 +1,19 @@
 import { useState } from "react";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  TextField,
-  Typography,
-  Divider,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import CardContent from "@mui/material/CardContent";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useDispatch } from "react-redux";
+import { asyncLoginUser } from "./../../../redux/actions/userAction";
+
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -18,13 +21,20 @@ const Login = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
 
-  const submitHandler = (data) => {
-    console.log(data);
+ const submitHandler = async (data) => {
+    try {
+
+      dispatch(asyncLoginUser(data));
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const RegisterPage = () => {
-    navigate('/register');
+    navigate("/register");
   };
 
   return (
@@ -34,7 +44,8 @@ const Login = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#fff",
+        backgroundColor: "rgba(0,0,0,0.04)",
+        
       }}
     >
       <Card sx={{ width: 380, boxShadow: 3 }}>
@@ -45,7 +56,7 @@ const Login = () => {
             align="center"
             sx={{ fontWeight: "bold", mb: 2 }}
           >
-            IMDb
+            login
           </Typography>
 
           {/* Title */}
@@ -106,14 +117,8 @@ const Login = () => {
             </Button>
           </form>
 
-          {/* Terms */}
-          {/* <Typography variant="body2" sx={{ mt: 2, fontSize: "12px" }}>
-            By continuing, you agree to IMDb's Conditions of Use and Privacy
-            Policy.
-          </Typography> */}
-
           {/* Divider */}
-          <Divider sx={{ my: 3 }}>New to IMDb?</Divider>
+          <Divider sx={{ my: 3 }}>New User?</Divider>
 
           {/* Create Account */}
           <Button
@@ -126,7 +131,7 @@ const Login = () => {
             }}
             onClick={() => RegisterPage()}
           >
-            Create your IMDb account
+            Create your account
           </Button>
         </CardContent>
       </Card>
@@ -134,4 +139,4 @@ const Login = () => {
   );
 };
 
-export default Login
+export default Login;

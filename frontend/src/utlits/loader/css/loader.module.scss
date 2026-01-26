@@ -1,0 +1,7 @@
+@use '../../../styles/abstracts/mixins' as *;
+
+.LoaderContainer{
+    @include flex-center;
+    min-height: 100vh;
+
+}

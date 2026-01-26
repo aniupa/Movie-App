@@ -1,31 +1,40 @@
-import React from "react";
-import {
-  Box,
-  Button,
-  Container,
-  TextField,
-  Typography,
-  Divider,
-  Link,
-  InputAdornment,
-  IconButton,
-  Paper,
-} from "@mui/material";
-import { useState } from "react";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
+import { useState } from "react";
+import { asyncRegisterUser } from "../../../redux/actions/userAction.js";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const RegisterPage = () => {
   const { register, reset, handleSubmit } = useForm();
   const [showPassword, setShowPassword] = useState(false);
-  const navigate=useNavigate();
-  const submitHandler = (data) => {
-    console.log(data);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const submitHandler = async (data) => {
+    try {
+
+      dispatch(asyncRegisterUser(data));
+    } catch (error) {
+      console.log(error);
+    }
   };
-   const loginPage = () => {
-    navigate('/login');
+
+  const loginPage = () => {
+    navigate("/login");
   };
 
   return (
@@ -36,20 +45,20 @@ const RegisterPage = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        
       }}
     >
       <Box width="100%">
         {/* Logo */}
-        <Box textAlign="center" mb={2}>
-          
-           <Typography
-                      variant="h4"
-                      align="center"
-                      sx={{ fontWeight: "bold", mb: 2 }}
-                    >
-                      IMDb
-                    </Typography>
-        </Box>
+        {/* <Box textAlign="center" mb={2}> */}
+          {/* <Typography
+            variant="h4"
+            align="center"
+            sx={{ fontWeight: "bold", mb: 2 }}
+          }>
+            register
+          </Typography> */}
+        {/* </Box> */}
 
         {/* Card */}
         <Paper
@@ -59,7 +68,6 @@ const RegisterPage = () => {
             borderRadius: 2,
           }}
         >
-          
           <Typography variant="h5" mb={2}>
             Create account
           </Typography>

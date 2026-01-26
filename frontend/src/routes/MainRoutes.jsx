@@ -1,18 +1,21 @@
-import {lazy} from 'react'
+import { lazy, Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
+import { Loader } from "../utlits/loader/loader.jsx";
 
-import {Route,Routes} from 'react-router-dom'
-const Home = lazy(() => import('../pages/home/HomePg.jsx'));
-const Login = lazy(() => import('../pages/authentication/login/login.jsx'));
-const Register = lazy(() => import('../pages/authentication/register/Register.jsx'));
+
+const Home = lazy(() => import("../pages/home/HomePg.jsx"));
+const Login = lazy(() => import("../pages/authentication/login/login.jsx"));
+const Register = lazy(() => import("../pages/authentication/register/Register.jsx"));
+
 
 const MainRoutes = () => {
   return (
-    <Routes>
-      <Route path='/register' element={<Register/>}></Route>
-        <Route path='/' element={<Home/>}></Route>
-        <Route path='/login' element={<Login/>}></Route>
-    </Routes>
-  )
-}
+      <Routes>
+        <Route path="/" element={<Suspense fallback={<Loader/>}><Home /></Suspense>} />
+        <Route path="/login" element={<Suspense fallback={<Loader/>}><Login /></Suspense>} />
+        <Route path="/register" element={<Suspense fallback={<Loader/>}><Register /></Suspense>} />
+      </Routes>
+  );
+};
 
-export default MainRoutes
+export default MainRoutes;

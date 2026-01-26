@@ -1,20 +1,32 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { userModel } from "../models/user.model.js";
 dotenv.config();
 
-export const auth = (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return res.status(401).json({ message: "unauthorized" });
-  }
+export const auth = async (req, res, next) => {
   try {
+    const token = req.cookies?.token;
+
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized: No token" });
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+
+    const user = await userModel.findById(decoded.id)
+      .select("-password -createdAt -updatedAt -__v") 
+      .lean(); 
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized: User not found" });
+    }
+
+    req.user = user;
+
     next();
   } catch (error) {
-    return res
-      .status(401)
-      .json({ message: "Invalid token", error: error.message });
+    return res.status(401).json({
+      message: "Unauthorized: Invalid or expired token",
+    });
   }
 };
 
