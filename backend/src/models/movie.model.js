@@ -28,11 +28,13 @@ const movieSchema = new mongoose.Schema(
     },
 
     // Release date
-    releaseDate: {
-      type: Date,
-      required: true,
-      index: true
-    },
+   
+releaseYear: {
+  type: Number,
+  index: true,
+  required: true,
+},
+
 
     // Duration in minutes
     duration: {

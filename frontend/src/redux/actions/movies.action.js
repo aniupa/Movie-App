@@ -28,8 +28,9 @@ export const asyncLoadMoviesAction = (data) => async (dispatch) => {
 export const asyncSearchMoviesAction = (query) => async (dispatch) => {
   try {
     const res = await axios.get("/movies/", {
-      params: { search: query },
+      params: { sortBy: query.sortBy, order: query.order, search: query.search },
     });
+    
 
     dispatch(
       loadMovie({
@@ -41,5 +42,28 @@ export const asyncSearchMoviesAction = (query) => async (dispatch) => {
     );
   } catch (error) {
     console.log("Error searching movies:", error);
+  }
+};
+
+
+
+export const asyncSortMoviesAction = (query) => async (dispatch) => {
+  try {
+    const res = await axios.get("/movies/sort", {
+      params: { sortBy: query.sortBy, order: query.order, ...query },
+    });
+    
+    
+
+    dispatch(
+      loadMovie({
+        movieCollection: res?.data?.data,
+        total: res?.data?.total,
+        page: res?.data?.page,
+        limit: res?.data?.limit,
+      }),
+    );
+  } catch (error) {
+    console.log("Error filtering movies by genre:", error);
   }
 };
