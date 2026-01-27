@@ -29,6 +29,8 @@ const Navbar = ({ isAuthenticated, onLogin, onLogout, onRegister, onSearch }) =>
   const handleSearch = (e) => {
     if (e.key === "Enter" && onSearch) {
       onSearch(searchValue.trim());
+      // console.log(searchValue);
+      
     }
   };
 
@@ -77,7 +79,7 @@ const Navbar = ({ isAuthenticated, onLogin, onLogout, onRegister, onSearch }) =>
           {/* Logo */}
           <MovieIcon sx={{ color: "error.main" }} />
           <Typography variant="h6" sx={{ fontWeight: 700 }}>
-            MovieFlix
+            Movie App
           </Typography>
 
           {/* Search Bar */}
