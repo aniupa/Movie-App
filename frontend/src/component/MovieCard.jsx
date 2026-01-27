@@ -1,78 +1,152 @@
-
-
-//new test-----------------------------
 import React, { memo } from "react";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+
+import StarIcon from "@mui/icons-material/Star";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import MovieIcon from "@mui/icons-material/Movie";
 
 
-const MovieCard = ({ movie }) => {
+const MovieCard = ({ movie, rank }) => {
   return (
-    
     <Card
       sx={{
-        bgcolor: "#1c1c1c",
-        color: "#fff",
-        height: "100%",
         display: "flex",
-        flexDirection: "column",
-        transition: "transform 0.2s ease-in-out",
-        willChange: "transform",
-        "&:hover": {
-          transform: "translateY(-6px)",
-        },
+        flexDirection: { xs: "column", sm: "row" }, // 🔥 responsive layout
+        bgcolor: "#121212",
+        color: "#fff",
+        borderRadius: 2,
+        overflow: "hidden",
+        transition: "transform .2s ease",
+        "&:hover": { transform: "scale(1.02)" },
+        width: "100%",
       }}
       elevation={3}
     >
+      {/* Poster */}
       <CardMedia
         component="img"
         image={movie?.imgUrl}
         alt={movie?.title}
-        loading="lazy" 
+        loading="lazy"
         sx={{
-          aspectRatio: "16 / 9", // responsive poster ratio
+          width: { xs: "100%", sm: 110 },     // full width on mobile
+          height: { xs: 220, sm: 165 },       // taller mobile poster
           objectFit: "cover",
+          flexShrink: 0,
         }}
       />
 
-      <CardContent sx={{ flexGrow: 1 }}>
-        <Typography variant="subtitle1" fontWeight={600} noWrap>
-          {movie?.title}
-        </Typography>
-        <Typography variant="body2" color="gray">
-          {movie?.year}
-        </Typography>
-      </CardContent>
-
-      <CardActions sx={{ justifyContent: "space-between", px: 2, pb: 2 }}>
-        <Button
-          size="small"
-          variant="contained"
-          startIcon={<PlayArrowIcon />}
-          sx={{
-            bgcolor: "error.main",
-            textTransform: "none",
-            "&:hover": { bgcolor: "error.dark" },
-          }}
+      {/* Content */}
+      <CardContent
+        sx={{
+          flex: 1,
+          p: 2,
+          "&:last-child": { pb: 2 },
+        }}
+      >
+        <Stack
+          direction={{ xs: "column", sm: "row" }} // stack vertically on mobile
+          spacing={2}
+          alignItems={{ xs: "flex-start", sm: "flex-start" }}
         >
-          Watch
-        </Button>
+          {/* Rank */}
+          <Typography
+            variant="h6"
+            sx={{
+              color: "gray",
+              fontWeight: 700,
+              minWidth: { sm: 28 },
+            }}
+          >
+            #{rank}
+          </Typography>
 
-        <IconButton color="error" aria-label="add to watchlist">
-          <MovieIcon />
-        </IconButton>
-      </CardActions>
+          {/* Main Info */}
+          <Box flex={1} width="100%">
+            <Typography variant="subtitle1" fontWeight={700} noWrap>
+              {movie?.title}
+            </Typography>
+
+            <Typography
+              variant="body2"
+              color="gray"
+              sx={{ mb: 1, fontSize: { xs: 13, sm: 14 } }}
+            >
+              {movie?.year} • {movie?.duration} • {movie?.ratingCert}
+            </Typography>
+
+            {/* Genres */}
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{ mb: 1 }}
+              flexWrap="wrap"
+            >
+              {movie?.genres?.slice(0, 3).map((g) => (
+                <Chip
+                  key={g}
+                  label={g}
+                  size="small"
+                  sx={{
+                    bgcolor: "#1f1f1f",
+                    color: "#aaa",
+                    fontSize: 11,
+                    height: 22,
+                  }}
+                />
+              ))}
+            </Stack>
+
+            {/* Description (hide on very small screens) */}
+            <Typography
+              variant="body2"
+              color="gray"
+              sx={{
+                display: { xs: "none", sm: "-webkit-box" }, // hide on mobile
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
+              {movie?.description}
+            </Typography>
+          </Box>
+
+          {/* Rating + Actions */}
+          <Box
+            textAlign={{ xs: "left", sm: "right" }}
+            width={{ xs: "100%", sm: "auto" }}
+          >
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+              <StarIcon sx={{ color: "#f5c518", fontSize: 20 }} />
+              <Typography fontWeight={700}>{movie?.imdbRating}</Typography>
+            </Stack>
+
+            <Typography variant="caption" color="gray">
+              {movie?.votes} votes
+            </Typography>
+
+            <Stack direction="row" spacing={1} mt={1}>
+              <IconButton size="small" sx={{ color: "#f5c518" }}>
+                <BookmarkBorderIcon />
+              </IconButton>
+              <IconButton size="small" sx={{ color: "error.main" }}>
+                <PlayArrowIcon />
+              </IconButton>
+            </Stack>
+          </Box>
+        </Stack>
+      </CardContent>
     </Card>
   );
 };
 
 
 export default memo(MovieCard);
-

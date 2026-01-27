@@ -1,16 +1,25 @@
 import axios from "../../utlits/axios";
 import { loadMovie } from "../features/movieSlice";
 
-export const asyncLoadMoviesAction = () => async (dispatch) => {
+export const asyncLoadMoviesAction = (data) => async (dispatch) => {
   try {
+
     const res = await axios.get("/movies/", {
       params: {
-        page: 1,
-        limit: 3,
+        page: data?.page ,
+        limit: data?.limit ,
       },
     });
 
-    dispatch(loadMovie(res.data.data));
+
+    dispatch(
+      loadMovie({
+        movieCollection: res?.data?.data,
+        total: res?.data?.total ,
+        page: res?.data?.page ,
+        limit: res?.data?.limit ,
+      }),
+    );
   } catch (error) {
     console.log("Error fetching movies:", error);
   }

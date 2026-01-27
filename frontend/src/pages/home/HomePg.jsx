@@ -1,38 +1,36 @@
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-// import Grid from "@mui/material/Grid";
-// import Card from "@mui/material/Card";
-// import CardMedia from "@mui/material/CardMedia";
-// import CardContent from "@mui/material/CardContent";
-// import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 
-import MovieIcon from "@mui/icons-material/Movie";
-
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { asyncLoadMoviesAction } from "../../redux/actions/movies.action.js";
-import { useEffect } from "react";
+import {useState,useMemo, useEffect } from "react";
 
-import MovieCard from "../../component/MovieCard.jsx";
 import MovieGrid from "../../component/MovieGrid.jsx";
-
+import AppPagination from "../../component/AppPagination.jsx";
 
 export default function Movies() {
   const dispatch = useDispatch();
-  const movies = useSelector((state) => state.movies.movieCollection);
-  
-  useEffect(() => {
-    dispatch(asyncLoadMoviesAction());
-  }, []);
+  const {movieCollection, total} = useSelector((state) => state.movies);
 
+  const [page, setPage] = useState(1);
+const limit = 5;
+
+
+  useEffect(() => {
+    dispatch(asyncLoadMoviesAction({page:page,limit:limit}));
+    
+  }, [page, dispatch]);
+
+const handlePageChange = (event, value) => {
+  setPage(value);
+  
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+ 
 
   return (
     <>
-      
-
       {/* Hero Section */}
       <Box
         sx={{
@@ -61,11 +59,15 @@ export default function Movies() {
       {/* Movie List */}
       <Container sx={{ py: 5 }}>
         <Typography variant="h5" fontWeight="bold" gutterBottom>
-          Trending Movies
+          Popular Movies
         </Typography>
-        <MovieGrid movies={movies} />
-        
+        <MovieGrid movies={movieCollection} />
+        <AppPagination
+          page={page}
+          count={Math.ceil(total / limit)}
+          onChange={handlePageChange}
+        />
       </Container>
     </>
-  )
+  );
 }
