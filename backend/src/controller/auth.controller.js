@@ -13,8 +13,13 @@ const generateToken = (user) => {
 
 export async function registerUserController(req, res, next) {
   try {
+    if (!req.body) {
+       throw new ApiError(400, "Invalid request body");
+    }
     const { username, email, password } = req.body;
-
+if (!username || !email || !password) {
+  throw new ApiError(400, "All fields are required");
+    }
     const isUserExists = await userModel.findOne({ email });
     if (isUserExists) {
       throw new ApiError(400, "user already exists");
@@ -24,7 +29,7 @@ export async function registerUserController(req, res, next) {
       role = "admin";
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 4);
 
     const user = await userModel.create({
       username,
@@ -46,6 +51,9 @@ export async function registerUserController(req, res, next) {
       token,
     });
   } catch (error) {
+    if (error.code === 11000) {
+      throw new ApiError(400, "Email already exists");
+    }
     next(error);
   }
 }

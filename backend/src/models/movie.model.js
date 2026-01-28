@@ -68,15 +68,16 @@ releaseYear: {
 );
 
 // Text index for search
+
 movieSchema.index({
   title: "text",
   description: "text"
 },{weights:{
   title:5,description:1
 },name:'MovieTextIndex'});
-
-movieSchema.index({ isDeleted: 1, createdAt: -1 });
-movieSchema.index({ isDeleted: 1, rating: -1 });
-movieSchema.index({ isDeleted: 1, releaseDate: -1 });
+movieSchema.index({ rating: -1, releaseYear: -1 });
+movieSchema.index({ releaseYear: -1, rating: -1 });
+movieSchema.index({ duration: 1, rating: -1 });
+movieSchema.index({ rating: -1, _id: 1 });
 
 export const movieModel = mongoose.model("Movie", movieSchema);

@@ -1,6 +1,5 @@
 import { movieModel } from "../models/movie.model.js";
 import { searchMoviesService } from "../services/movie.service.js";
-// import { sortMoviesService } from "../services/movis.sort.service.js";
 import { ApiError } from "../utlis/ApiError.js";
 
 // Search movies , Get all movies, sort movies
@@ -28,22 +27,6 @@ export const searchMoviesController = async (req, res, next) => {
     next(error);
   }
 };
-// Get movie by ID
-export const getMovieByIdController = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const movie = await movieModel.findById(id);
-    if (!movie) {
-      throw new ApiError(404, "Movie not found");
-    }
-    res.status(200).json({ success: true, data: movie });
-  } catch (error) {
-    next(error);
-  }
-};
-
-//admin only
-
 // Create movie
 export const createMoviesController = async (req, res, next) => {
   try {

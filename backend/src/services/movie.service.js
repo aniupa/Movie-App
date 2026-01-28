@@ -27,6 +27,9 @@ export const searchMoviesService = async ({
   const durationFrom = toNumber(filters.durationFrom);
   const durationTo = toNumber(filters.durationTo);
 
+  const MAX_LIMIT = 20;
+limit = Math.min(Number(limit) || 10, MAX_LIMIT);
+
   // 🔍 Text search
   if (search?.trim()) {
     filter.$text = { $search: search.trim() };
@@ -62,7 +65,7 @@ export const searchMoviesService = async ({
   const safeSortBy = SORTABLE_FIELDS.includes(sortBy) ? sortBy : "rating";
 
   const sortQuery = search
-    ? { score: { $meta: "textScore" }, [safeSortBy]: safeOrder }
+    ? { score: { $meta: "textScore" }}
     : { [safeSortBy]: safeOrder };
 
   const [movies, total] = await Promise.all([
