@@ -1,29 +1,28 @@
+
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
 
-import { useDispatch, useSelector } from "react-redux";
-import { asyncLoadMoviesAction } from "../../redux/actions/movies.action.js";
-import {useState,useMemo, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux"; 
+import {  asyncSearchMoviesAction } from "../../redux/actions/movies.action.js";
+import { setPage } from "../../redux/features/movieSlice.js";
+import { useEffect } from "react";
 
 import MovieGrid from "../../component/MovieGrid.jsx";
 import AppPagination from "../../component/AppPagination.jsx";
+import Header from "../../component/Header.jsx";
 
 export default function Movies() {
   const dispatch = useDispatch();
-  const {movieCollection, total} = useSelector((state) => state.movies);
-
-  const [page, setPage] = useState(1);
-const limit = 5;
+  const {movieCollection, total,page,limit,searchQuery} = useSelector((state) => state.movies);
 
 
-  useEffect(() => {
-    dispatch(asyncLoadMoviesAction({page:page,limit:limit}));
-    
-  }, [page, dispatch]);
+ useEffect(() => {
+  dispatch(asyncSearchMoviesAction({ page, limit, search: searchQuery }));
+}, [page, limit, searchQuery, dispatch]);
+
 
 const handlePageChange = (event, value) => {
-  setPage(value);
+  dispatch(setPage(value));
   
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
@@ -31,30 +30,7 @@ const handlePageChange = (event, value) => {
 
   return (
     <>
-      {/* Hero Section */}
-      <Box
-        sx={{
-          height: 300,
-          backgroundImage:
-            "url(https://images.unsplash.com/photo-1524985069026-dd778a71c7b4)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#fff",
-          textAlign: "center",
-        }}
-      >
-        <Box sx={{ background: "rgba(0,0,0,0.6)", p: 4, borderRadius: 2 }}>
-          <Typography variant="h3" fontWeight="bold">
-            Unlimited Movies, TV Shows & More
-          </Typography>
-          <Typography variant="h6" sx={{ mt: 1 }}>
-            Watch anywhere. Cancel anytime.
-          </Typography>
-        </Box>
-      </Box>
+     <Header />
 
       {/* Movie List */}
       <Container sx={{ py: 5 }}>

@@ -27,8 +27,9 @@ export const asyncLoadMoviesAction = (data) => async (dispatch) => {
 
 export const asyncSearchMoviesAction = (query) => async (dispatch) => {
   try {
+    
     const res = await axios.get("/movies/", {
-      params: { sortBy: query.sortBy, order: query.order, search: query.search },
+      params: { page: query.page, limit: query.limit, search: query.search },
     });
     
 

@@ -2,8 +2,21 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const movieSlice = createSlice({
   name: "movie",
-  initialState: { movieCollection: [], total: 0, page: 1, limit: 4 },
+  initialState: {
+    movieCollection: [],
+    total: 0,
+    page: 1,
+    limit: 8,
+    searchQuery: "",
+  },
   reducers: {
+    setPage: (state, action) => {
+      state.page = action.payload;
+    },
+     setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
+      state.page = 1; 
+    },
     addMovie: (state, action) => {
       state.movieCollection = action.payload;
     },
@@ -19,5 +32,5 @@ export const movieSlice = createSlice({
   },
 });
 
-export const { addMovie, removeMovie, loadMovie } = movieSlice.actions;
+export const { addMovie, removeMovie, loadMovie, setPage, setSearchQuery } = movieSlice.actions;
 export default movieSlice.reducer;
