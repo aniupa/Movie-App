@@ -15,13 +15,19 @@ import AuthButton2 from "./authComponents/AuthButton2.jsx";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { SortControls } from "./SortControls.jsx";
+import Button  from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
+
+
 const Navbar = ({
-  isAuthenticated
+  isAuthenticated,
+  role
 }) => {
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const navigate=useNavigate();
 
  
   
@@ -58,6 +64,12 @@ const Navbar = ({
             isMobile={isMobile}
             setFilterDrawerOpen={setFilterDrawerOpen}
           />
+          <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
+             <Button variant="contained" color="error" href="/admin/create-movie" disabled={role !== 'admin'} onClick={() => navigate('/admin/create-movie')}>
+            create Movie
+          </Button>
+          </Box>
+
 
           {/* Desktop Auth Buttons */}
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>

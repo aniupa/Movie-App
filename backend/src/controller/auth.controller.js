@@ -2,7 +2,6 @@ import { userModel } from "../models/user.model.js";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import cookies from "cookie-parser";
 import { ApiError } from "../utlis/ApiError.js";
 
 dotenv.config();

@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import  { memo } from "react";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";

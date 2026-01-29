@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import axios from "../../utlits/axios";
 import { loadMovie } from "../features/movieSlice";
 
@@ -66,5 +67,38 @@ export const asyncSortMoviesAction = (query) => async (dispatch) => {
     );
   } catch (error) {
     console.log("Error filtering movies by genre:", error);
+  }
+};
+
+//admin
+
+export const asyncCreateMovieAction = (data) => async () => {
+  try {
+    await axios.post("/movies", data, { withCredentials: true });
+    
+    toast.success("Movie created successfully 🎬");
+  } catch (error) {
+    console.error(error);
+    
+  }
+};
+
+export const asyncDeleteMovieAction = (movieId) => async (dispatch) => {
+  try {
+    await axios.delete(`/movies/${movieId}`, { withCredentials: true });
+    // alert("Movie deleted successfully 🗑️");
+  } catch (error) {
+    console.error(error);
+    alert(error.response?.data?.message || "Failed to delete movie");
+  }
+};
+
+export const asyncUpdateMovieAction = (movieId, data) => async (dispatch) => {
+  try {
+    await axios.put(`/movies/${movieId}`, data, { withCredentials: true });
+    // alert("Movie updated successfully ✏️");
+  } catch (error) {
+    console.error(error);
+    alert(error.response?.data?.message || "Failed to update movie");
   }
 };

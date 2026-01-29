@@ -39,6 +39,7 @@ export const asyncCurrentUser = () => async (dispatch) => {
     const res = await axios.get("/auth/user/currentUser", {
       withCredentials: true, // 🔥 sends cookie
     });
+    
 
     dispatch(loadUser(res.data.user));
   } catch (error) {
