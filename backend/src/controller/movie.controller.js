@@ -46,6 +46,21 @@ export const createMoviesController = async (req, res, next) => {
   }
 };
 
+// Get movie by ID
+export const getMovieByIdController = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    
+    const movie = await movieModel.findById(id).select("-__v -createdAt -updatedAt -_id -isDeleted").lean();
+    if (!movie) {
+      throw new ApiError(404, "Movie not found");
+    }
+    res.status(200).json({ success: true, data: movie });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Update movie
 export const updateMoviesController = async (req, res, next) => {
   try {

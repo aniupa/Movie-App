@@ -1,11 +1,13 @@
 import express from "express";
 import { auth,isAdmin } from "../middleware/auth.middleware.js";
-import {sortMoviesController,updateMoviesController,deleteMoviesController,createMoviesController, searchMoviesController} from '../controller/movie.controller.js'
+import {getMovieByIdController,sortMoviesController,updateMoviesController,deleteMoviesController,createMoviesController, searchMoviesController} from '../controller/movie.controller.js'
+import { validateObjectId } from "../middleware/validation.middleware.js";
 const router = express();
 
 // public routes
 router.get("/", sortMoviesController);
 router.get("/sort", searchMoviesController);
+router.get("/:id",validateObjectId, getMovieByIdController);
 
 
 // admin routes

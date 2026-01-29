@@ -8,6 +8,8 @@ import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import MovieIcon from "@mui/icons-material/Movie";
 import SearchBox from "./SearchBox.jsx";
+import AddIcon from "@mui/icons-material/Add";
+
 //---- Auth Components
 import AuthButtons from "./authComponents/AuthButtons.jsx";
 import AuthButton2 from "./authComponents/AuthButton2.jsx";
@@ -65,10 +67,31 @@ const Navbar = ({
             setFilterDrawerOpen={setFilterDrawerOpen}
           />
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
-             <Button variant="contained" color="error" href="/admin/create-movie" disabled={role !== 'admin'} onClick={() => navigate('/admin/create-movie')}>
-            create Movie
-          </Button>
-          </Box>
+  <Button
+    variant="contained"
+    color="error"
+    disabled={role !== "admin"}
+    onClick={() => navigate("/admin/create-movie")}
+    sx={{
+      fontWeight: 700,
+      textTransform: "none",
+      px: 3,
+      py: 1.2,
+      borderRadius: 2,
+      boxShadow: 3,
+      "&:hover": {
+        boxShadow: 6,
+      },
+      "&.Mui-disabled": {
+        backgroundColor: "#444",
+        color: "#aaa",
+      },
+    }}
+  >
+    Create Movie
+  </Button>
+</Box>
+
 
 
           {/* Desktop Auth Buttons */}
@@ -80,25 +103,57 @@ const Navbar = ({
 
       {/* Mobile Drawer */}
       <Drawer
-        anchor="right"
-        open={filterDrawerOpen}
-        onClose={() => setFilterDrawerOpen(false)}
-      >
-        <Box
-          sx={{
-            width: 260,
-            p: 2,
-            bgcolor: "#121212",
-            height: "100%",
-            color: "#fff",
-          }}
-        >
-          {isMobile && drawer}
-          <SortControls />
+  anchor="right"
+  open={filterDrawerOpen}
+  onClose={() => setFilterDrawerOpen(false)}
+>
+  <Box
+    sx={{
+      width: 260,
+      p: 2,
+      bgcolor: "#121212",
+      height: "100%",
+      color: "#fff",
+      display: "flex",
+      flexDirection: "column",
+      gap: 2,
+    }}
+  >
+    {isMobile && drawer}
 
-          <Divider sx={{ my: 2, bgcolor: "#333" }} />
-        </Box>
-      </Drawer>
+    {/* 🔴 Create Movie Button (Mobile) */}
+    <Button
+      variant="contained"
+      color="error"
+      fullWidth
+      startIcon={<AddIcon />}
+      disabled={role !== "admin"}
+      onClick={() => {
+        navigate("/admin/create-movie");
+        setFilterDrawerOpen(false); // close drawer after click
+      }}
+      sx={{
+        fontWeight: 700,
+        textTransform: "none",
+        py: 1.2,
+        borderRadius: 2,
+        boxShadow: 3,
+        "&:hover": { boxShadow: 6 },
+        "&.Mui-disabled": {
+          backgroundColor: "#444",
+          color: "#aaa",
+        },
+      }}
+    >
+      Create Movie
+    </Button>
+
+    <SortControls />
+
+    <Divider sx={{ my: 2, bgcolor: "#333" }} />
+  </Box>
+</Drawer>
+
     </>
   );
 };

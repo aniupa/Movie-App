@@ -1,19 +1,36 @@
-import  { memo } from "react";
+import { memo } from "react";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
+import EditIcon from "@mui/icons-material/Edit";
+import { useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Button from "@mui/material/Button";
 
 import StarIcon from "@mui/icons-material/Star";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-
-
+import { useDispatch } from "react-redux";
+import { asyncDeleteMovieAction } from "../redux/actions/movies.action";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const MovieCard = ({ movie, rank }) => {
+  const [showActions, setShowActions] = useState(false);
+  const dispatch = useDispatch();
+  const isAdmin = useSelector((state) => state?.user?.data?.role === "admin");
+
+  const { page, limit } = useSelector((state) => state.movies);
+  const Navigate = useNavigate();
+  const deleteHandler = () => {
+    dispatch(asyncDeleteMovieAction({ id: movie._id, page, limit }));
+  };
+  const updateHandler = () => {
+    Navigate(`/admin/update-movie/${movie._id}`);};
+
   return (
     <Card
       sx={{
@@ -36,13 +53,12 @@ const MovieCard = ({ movie, rank }) => {
         alt={movie?.title}
         loading="lazy"
         sx={{
-          width: { xs: "100%", sm: 110 },     // full width on mobile
-          height: { xs: 220, sm: 165 },       // taller mobile poster
+          width: { xs: "100%", sm: 110 }, // full width on mobile
+          height: { xs: 220, sm: 165 }, // taller mobile poster
           objectFit: "cover",
           flexShrink: 0,
         }}
       />
-
       {/* Content */}
       <CardContent
         sx={{
@@ -67,7 +83,6 @@ const MovieCard = ({ movie, rank }) => {
           >
             #{rank}
           </Typography>
-
           {/* Main Info */}
           <Box flex={1} width="100%">
             <Typography variant="subtitle1" fontWeight={700} noWrap>
@@ -79,10 +94,8 @@ const MovieCard = ({ movie, rank }) => {
               color="gray"
               sx={{ mb: 1, fontSize: { xs: 13, sm: 14 } }}
             >
-              {movie?.releaseYear} •  {movie?.duration} mins
+              {movie?.releaseYear} • {movie?.duration} mins
             </Typography>
-
-            
 
             {/* Description (hide on very small screens) */}
             <Typography
@@ -98,7 +111,6 @@ const MovieCard = ({ movie, rank }) => {
               {movie?.description}
             </Typography>
           </Box>
-
           {/* Rating  */}
           <Box
             textAlign={{ xs: "left", sm: "right" }}
@@ -108,22 +120,56 @@ const MovieCard = ({ movie, rank }) => {
               <StarIcon sx={{ color: "#f5c518", fontSize: 20 }} />
               <Typography fontWeight={700}>{movie?.rating}</Typography>
             </Stack>
-
-
             <Stack direction="row" spacing={1} mt={1}>
               <IconButton size="small" sx={{ color: "#f5c518" }}>
                 <BookmarkBorderIcon />
               </IconButton>
+
               <IconButton size="small" sx={{ color: "error.main" }}>
                 <PlayArrowIcon />
               </IconButton>
+
+              {/* Edit Button */}
+              <IconButton
+                size="small"
+                sx={{ color: "primary.main" }}
+                 disabled={!isAdmin}
+                onClick={() => setShowActions((prev) => !prev)}
+              >
+                <EditIcon />
+              </IconButton>
             </Stack>
+            {showActions && (
+              <Stack direction="row" spacing={1} mt={1}>
+                {" "}
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="error"
+                  startIcon={<DeleteIcon />}
+                  
+                  disabled={!isAdmin}
+                  onClick={deleteHandler}
+                >
+                  {" "}
+                  Delete{" "}
+                </Button>{" "}
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  disabled={!isAdmin}
+                  onClick={updateHandler}
+                >
+                  Update
+                </Button>
+              </Stack>
+            )}
           </Box>
         </Stack>
       </CardContent>
     </Card>
   );
 };
-
 
 export default memo(MovieCard);
