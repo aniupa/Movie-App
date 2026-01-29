@@ -6,7 +6,7 @@ const router = express();
 
 // public routes
 router.get("/", sortMoviesController);
-router.get("/sort", searchMoviesController);
+router.get("/sort", sortMoviesController);
 router.get("/:id",validateObjectId, getMovieByIdController);
 
 
