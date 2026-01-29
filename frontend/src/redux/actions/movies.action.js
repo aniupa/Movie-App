@@ -62,7 +62,7 @@ export const asyncSortMoviesAction = (query) => async (dispatch) => {
   try {
     
     const res = await axios.get("/movies/sort", {
-      params: { sortBy: query.sortBy, order: query.order, ...query },
+      params: { ...query },
     });
 
     dispatch(
