@@ -79,30 +79,10 @@ const MovieCard = ({ movie, rank }) => {
               color="gray"
               sx={{ mb: 1, fontSize: { xs: 13, sm: 14 } }}
             >
-              {movie?.year} • {movie?.duration} • {movie?.ratingCert}
+              {movie?.releaseYear} •  {movie?.duration} mins
             </Typography>
 
-            {/* Genres */}
-            <Stack
-              direction="row"
-              spacing={1}
-              sx={{ mb: 1 }}
-              flexWrap="wrap"
-            >
-              {movie?.genres?.slice(0, 3).map((g) => (
-                <Chip
-                  key={g}
-                  label={g}
-                  size="small"
-                  sx={{
-                    bgcolor: "#1f1f1f",
-                    color: "#aaa",
-                    fontSize: 11,
-                    height: 22,
-                  }}
-                />
-              ))}
-            </Stack>
+            
 
             {/* Description (hide on very small screens) */}
             <Typography
@@ -119,19 +99,16 @@ const MovieCard = ({ movie, rank }) => {
             </Typography>
           </Box>
 
-          {/* Rating + Actions */}
+          {/* Rating  */}
           <Box
             textAlign={{ xs: "left", sm: "right" }}
             width={{ xs: "100%", sm: "auto" }}
           >
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <StarIcon sx={{ color: "#f5c518", fontSize: 20 }} />
-              <Typography fontWeight={700}>{movie?.imdbRating}</Typography>
+              <Typography fontWeight={700}>{movie?.rating}</Typography>
             </Stack>
 
-            <Typography variant="caption" color="gray">
-              {movie?.votes} votes
-            </Typography>
 
             <Stack direction="row" spacing={1} mt={1}>
               <IconButton size="small" sx={{ color: "#f5c518" }}>
