@@ -8,26 +8,45 @@ import dotenv from "dotenv";
 dotenv.config();
 import morgan from "morgan";
 
-const allowedOrigins = ["http://localhost:5173", process.env.FRONTEND_URL];
 const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  process.env.FRONTEND_URL, // your production frontend
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // Postman / server-to-server
+    origin: (origin, callback) => {
+      // Allow non-browser tools (Postman, curl)
+      if (!origin) return callback(null, true);
 
+      // Allow localhost in dev
+      if (
+        origin.startsWith("http://localhost:") ||
+        origin.startsWith("http://127.0.0.1:")
+      ) {
+        return callback(null, true);
+      }
+
+      // Allow your production frontend
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
 
-      return callback(new Error("CORS not allowed for this origin: " + origin));
+      // Allow Vercel preview deployments
+      if (origin.endsWith(".vercel.app")) {
+        return callback(null, true);
+      }
+
+      return callback(null, false); // Block silently without crashing
     },
     credentials: true,
   }),
 );
-
 app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/movies", movieRoutes);
