@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon server.js",
+    "dev": "nodemon server.js",
+    "server": "node server.js",
     "worker": "node worker.js"
   },
   "keywords": [],
