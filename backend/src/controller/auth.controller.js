@@ -37,7 +37,11 @@ if (!username || !email || !password) {
       role,
     });
     const token = generateToken(user);
-    res.cookie("token", token);
+    res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,        
+  sameSite: "none"     
+});
     res.status(201).json({
       success: true,
       message: "user registered successfully",
@@ -74,7 +78,11 @@ export async function loginUserController(req, res, next) {
 
     const token = generateToken(user);
 
-    res.cookie("token", token);
+    res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,        
+  sameSite: "none"     
+});
 
     res.status(200).json({
       success: true,
