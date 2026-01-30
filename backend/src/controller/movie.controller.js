@@ -1,3 +1,4 @@
+import { movieQueue } from "../configs/redis/queues/movieQueue.js";
 import { movieModel } from "../models/movie.model.js";
 import { searchMoviesService } from "../services/movie.service.js";
 import { ApiError } from "../utlis/ApiError.js";
@@ -30,17 +31,16 @@ export const searchMoviesController = async (req, res, next) => {
 // Create movie
 export const createMoviesController = async (req, res, next) => {
   try {
-    const { imgUrl, duration, releaseYear, rating, description, title } =
-      req.body;
-     const movie = await movieModel.create({
-      imgUrl: imgUrl.trim(),
-      duration,
-      releaseYear,
-      rating,
-      description: description.trim(),
-      title: title.trim()
-    });
-    res.status(201).json({ success: true, data: movie });
+    const movieData = req.body;
+    if (!movieData || typeof movieData !== "object") {
+  throw new ApiError(400, "movieData is required and must be an object");
+}
+
+    await movieQueue.add("ADD_MOVIE", movieData);
+
+    return res
+      .status(202)
+      .json({ success: true, message: "Movie queued for creation" });
   } catch (error) {
     next(error);
   }
@@ -50,8 +50,11 @@ export const createMoviesController = async (req, res, next) => {
 export const getMovieByIdController = async (req, res, next) => {
   try {
     const { id } = req.params;
-    
-    const movie = await movieModel.findById(id).select("-__v -createdAt -updatedAt -_id -isDeleted").lean();
+
+    const movie = await movieModel
+      .findById(id)
+      .select("-__v -createdAt -updatedAt -_id -isDeleted")
+      .lean();
     if (!movie) {
       throw new ApiError(404, "Movie not found");
     }
@@ -94,24 +97,21 @@ export const deleteMoviesController = async (req, res, next) => {
   }
 };
 
-
-
-
 export const sortMoviesController = async (req, res, next) => {
   try {
     const {
-    search,
-    page,
-    limit,
-    sortBy,
-    order,
-    yearFrom,
-    yearTo,
-    ratingFrom,
-    ratingTo,
-    durationFrom,
-    durationTo,
-  } = req.query;
+      search,
+      page,
+      limit,
+      sortBy,
+      order,
+      yearFrom,
+      yearTo,
+      ratingFrom,
+      ratingTo,
+      durationFrom,
+      durationTo,
+    } = req.query;
 
     const result = await searchMoviesService({
       search,
@@ -119,14 +119,14 @@ export const sortMoviesController = async (req, res, next) => {
       limit,
       sortBy,
       order,
-      filters:{
+      filters: {
         yearFrom,
         yearTo,
         ratingFrom,
         ratingTo,
         durationFrom,
         durationTo,
-      }
+      },
     });
 
     res.status(200).json({
