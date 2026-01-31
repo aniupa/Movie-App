@@ -1,13 +1,13 @@
 import { movieQueue } from "../configs/redis/queues/movieQueue.js";
 import { movieModel } from "../models/movie.model.js";
-import { searchMoviesService,getMoviesService } from "../services/movie.service.js";
+import { searchMoviesService } from "../services/movie.service.js";
 import { ApiError } from "../utlis/ApiError.js";
 
 export const getAllMoviesController = async (req, res, next) => {
   try {
     const { page, limit,sortBy = "title", order = "asc" } = req.query;
 
-    const result = await getMoviesService({
+    const result = await searchMoviesController({
       page,
       limit,sortBy,order
       
