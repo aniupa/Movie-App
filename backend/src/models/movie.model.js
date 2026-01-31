@@ -79,5 +79,11 @@ movieSchema.index({ rating: -1, releaseYear: -1 });
 movieSchema.index({ releaseYear: -1, rating: -1 });
 movieSchema.index({ duration: 1, rating: -1 });
 movieSchema.index({ rating: -1, _id: 1 });
+// Alphabetical sorting index
+movieSchema.index(
+  { title: 1 },
+  { collation: { locale: "en", strength: 2 }, name: "TitleAscendingIndex" }
+);
+
 
 export const movieModel = mongoose.model("Movie", movieSchema);

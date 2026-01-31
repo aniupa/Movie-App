@@ -3,6 +3,31 @@ import { movieModel } from "../models/movie.model.js";
 import { searchMoviesService } from "../services/movie.service.js";
 import { ApiError } from "../utlis/ApiError.js";
 
+export const getAllMoviesController = async (req, res, next) => {
+  try {
+    const { page, limit, sortBy = { title: 1 } } = req.query;
+    const result = await searchMoviesService({
+      
+      page,
+      limit,
+      sortBy,
+      order,
+     
+    });
+
+    res.status(200).json({
+      success: true,
+      page: result.page,
+      limit: result.limit,
+      total: result.total,
+      totalPages: Math.ceil(result.total / result.limit),
+      data: result.movies,
+      // result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 // Search movies , Get all movies, sort movies
 export const searchMoviesController = async (req, res, next) => {
   try {
@@ -33,8 +58,8 @@ export const createMoviesController = async (req, res, next) => {
   try {
     const movieData = req.body;
     if (!movieData || typeof movieData !== "object") {
-  throw new ApiError(400, "movieData is required and must be an object");
-}
+      throw new ApiError(400, "movieData is required and must be an object");
+    }
 
     await movieQueue.add("ADD_MOVIE", movieData);
 
