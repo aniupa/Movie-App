@@ -1,33 +1,27 @@
 import { movieQueue } from "../configs/redis/queues/movieQueue.js";
 import { movieModel } from "../models/movie.model.js";
-import { searchMoviesService } from "../services/movie.service.js";
+import { searchMoviesService,getMoviesService } from "../services/movie.service.js";
 import { ApiError } from "../utlis/ApiError.js";
 
 export const getAllMoviesController = async (req, res, next) => {
   try {
-    const { page, limit, sortBy = { title: 1 } } = req.query;
-    const result = await searchMoviesService({
-      
+    const { page, limit,sortBy = "title", order = "asc" } = req.query;
+
+    const result = await getMoviesService({
       page,
-      limit,
-      sortBy,
-      order,
-     
+      limit,sortBy,order
+      
     });
 
     res.status(200).json({
       success: true,
-      page: result.page,
-      limit: result.limit,
-      total: result.total,
-      totalPages: Math.ceil(result.total / result.limit),
-      data: result.movies,
-      // result,
+      ...result,
     });
   } catch (error) {
     next(error);
   }
 };
+
 // Search movies , Get all movies, sort movies
 export const searchMoviesController = async (req, res, next) => {
   try {
