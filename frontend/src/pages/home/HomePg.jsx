@@ -1,9 +1,11 @@
-
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-import { useDispatch, useSelector } from "react-redux"; 
-import {  asyncSearchMoviesAction } from "../../redux/actions/movies.action.js";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  asyncSearchMoviesAction,
+ 
+} from "../../redux/actions/movies.action.js";
 import { setPage } from "../../redux/features/movieSlice.js";
 import { useEffect } from "react";
 
@@ -13,24 +15,24 @@ import Header from "../../component/Header.jsx";
 
 export default function Movies() {
   const dispatch = useDispatch();
-  const {movieCollection, total,page,limit,searchQuery} = useSelector((state) => state.movies);
+  const { movieCollection, total, page, limit, filters, searchQuery ,order} =
+    useSelector((state) => state.movies);
 
+  useEffect(() => {
+   
+      dispatch(asyncSearchMoviesAction());
+   
+  }, [page, limit, searchQuery, dispatch,filters,order]);
 
- useEffect(() => {
-  dispatch(asyncSearchMoviesAction({ page, limit, search: searchQuery }));
-}, [page, limit, searchQuery, dispatch]);
+  const handlePageChange = (event, value) => {
+    dispatch(setPage(value));
 
-
-const handlePageChange = (event, value) => {
-  dispatch(setPage(value));
-  
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
- 
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
-     <Header />
+      <Header />
 
       {/* Movie List */}
       <Container sx={{ py: 5 }}>

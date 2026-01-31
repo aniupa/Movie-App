@@ -5,7 +5,7 @@ import {ApiError} from "../utlis/ApiError.js";
 export const validateObjectId =  (req, res, next) => {
   try {
     const { id } = req.params;
-  console.log(id);
+ 
   
 
   if (

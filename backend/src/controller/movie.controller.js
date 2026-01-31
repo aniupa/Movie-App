@@ -5,12 +5,12 @@ import { ApiError } from "../utlis/ApiError.js";
 
 export const getAllMoviesController = async (req, res, next) => {
   try {
-    const { page, limit,sortBy = "title", order = "asc" } = req.query;
+    const { page, limit,order } = req.query;
 
-    const result = await searchMoviesController({
+    const result = await searchMoviesService({
       page,
-      limit,sortBy,order
-      
+      limit,
+      order,
     });
 
     res.status(200).json({
@@ -25,14 +25,82 @@ export const getAllMoviesController = async (req, res, next) => {
 // Search movies , Get all movies, sort movies
 export const searchMoviesController = async (req, res, next) => {
   try {
-    const { search, page, limit, sortBy, order } = req.query;
+   const {
+      search,
+      page,
+      limit,
+      order,
+      yearFrom,
+      yearTo,
+      ratingFrom,
+      ratingTo,
+      durationFrom,
+      durationTo,
+    } = req.query;
 
     const result = await searchMoviesService({
       search,
       page,
       limit,
-      sortBy,
       order,
+     filters: {
+        yearFrom,
+        yearTo,
+        ratingFrom,
+        ratingTo,
+        durationFrom,
+        durationTo,
+      },
+    });
+
+   
+    
+
+     res.status(200).json({
+      success: true,
+      page: result.page,
+      limit: result.limit,
+      total: result.total,
+      totalPages: Math.ceil(result.total / result.limit),
+      data: result.movies,
+      // result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const sortMoviesController = async (req, res, next) => {
+  try {
+    const {
+      search,
+      page,
+      limit,
+      order,
+      yearFrom,
+      yearTo,
+      ratingFrom,
+      ratingTo,
+      durationFrom,
+      durationTo,
+    } = req.query;
+    
+
+    
+
+    const result = await searchMoviesService({
+      search,
+      page,
+      limit,
+      order,
+      filters: {
+        yearFrom,
+        yearTo,
+        ratingFrom,
+        ratingTo,
+        durationFrom,
+        durationTo,
+      },
     });
 
     res.status(200).json({
@@ -42,6 +110,7 @@ export const searchMoviesController = async (req, res, next) => {
       total: result.total,
       totalPages: Math.ceil(result.total / result.limit),
       data: result.movies,
+     
     });
   } catch (error) {
     next(error);
@@ -111,52 +180,6 @@ export const deleteMoviesController = async (req, res, next) => {
     res
       .status(200)
       .json({ success: true, message: "Movie deleted successfully" });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const sortMoviesController = async (req, res, next) => {
-  try {
-    const {
-      search,
-      page,
-      limit,
-      sortBy,
-      order,
-      yearFrom,
-      yearTo,
-      ratingFrom,
-      ratingTo,
-      durationFrom,
-      durationTo,
-    } = req.query;
-
-    const result = await searchMoviesService({
-      search,
-      page,
-      limit,
-      sortBy,
-      order,
-      filters: {
-        yearFrom,
-        yearTo,
-        ratingFrom,
-        ratingTo,
-        durationFrom,
-        durationTo,
-      },
-    });
-
-    res.status(200).json({
-      success: true,
-      page: result.page,
-      limit: result.limit,
-      total: result.total,
-      totalPages: Math.ceil(result.total / result.limit),
-      data: result.movies,
-      // result,
-    });
   } catch (error) {
     next(error);
   }

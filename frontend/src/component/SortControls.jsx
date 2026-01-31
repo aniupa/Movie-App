@@ -3,8 +3,10 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilters } from "../redux/features/movieSlice.js";
 import { asyncSortMoviesAction } from "../redux/actions/movies.action.js";
+import { useEffect } from "react";
 
 const inputSx = {
   bgcolor: "#1e1e1e",
@@ -16,11 +18,36 @@ const inputSx = {
 
 export const SortControls = () => {
   const dispatch = useDispatch();
-  const { register, handleSubmit, reset } = useForm();
+  const { yearFrom, yearTo, ratingFrom, ratingTo, durationFrom, durationTo } =
+    useSelector((state) => state.movies.filters);
+  const {
+    register,
+    handleSubmit,
+    reset
+  } = useForm({
+    defaultValues: {
+      yearFrom: "",
+      yearTo: "",
+      ratingFrom: "",
+      ratingTo: "",
+      durationFrom: "",
+      durationTo: "",
+    },
+  });
+  useEffect(() => {
+  reset({
+    yearFrom: yearFrom || "",
+    yearTo: yearTo || "",
+    ratingFrom: ratingFrom || "",
+    ratingTo: ratingTo || "",
+    durationFrom: durationFrom || "",
+    durationTo: durationTo || "",
+  });
+  }, [yearFrom, yearTo, ratingFrom, ratingTo, durationFrom, durationTo, reset]);
 
-  
   const submitHandler = (data) => {
-    dispatch(asyncSortMoviesAction(data));
+    dispatch(setFilters(data));
+    dispatch(asyncSortMoviesAction());
   };
   return (
     <Box sx={{ p: 2, color: "#fff" }}>

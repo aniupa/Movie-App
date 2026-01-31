@@ -2,8 +2,10 @@ import { toast } from "react-toastify";
 import axios from "../../utlits/axios";
 import { loadMovie, updateMovie } from "../features/movieSlice";
 
+
 export const asyncLoadMoviesAction = (data) => async (dispatch) => {
   try {
+    
     const res = await axios.get("/movies/", {
       params: {
         page: data?.page,
@@ -13,7 +15,7 @@ export const asyncLoadMoviesAction = (data) => async (dispatch) => {
 
     dispatch(
       loadMovie({
-        movieCollection: res?.data?.data,
+        movieCollection: res?.data?.movies,
         total: res?.data?.total,
         page: res?.data?.page,
         limit: res?.data?.limit,
@@ -24,26 +26,19 @@ export const asyncLoadMoviesAction = (data) => async (dispatch) => {
   }
 };
 
-export const asyncLoadMovieByIdAction = (id) => async (dispatch) => {
-  try {
-    const res = await axios.get(`/movies/${id}`);
-    // console.log(res.data);
 
-    dispatch(
-      updateMovie({
-        selectedMovie: res?.data,
-      }),
-    );
-  } catch (error) {
-    console.log("Error fetching movie by ID:", error);
-  }
-};
 
-export const asyncSearchMoviesAction = (query) => async (dispatch) => {
+export const asyncSearchMoviesAction = () => async (dispatch,getState) => {
   try {
-    const res = await axios.get("/movies/", {
-      params: { page: query.page, limit: query.limit, search: query.search },
+    const state=getState();
+     const {searchQuery,order,page,limit,filters}=state.movies;
+    
+    
+    
+    const res = await axios.get("/movies/search", {
+      params: { search:searchQuery,order:order,page:page,limit:limit ,...filters},
     });
+
 
     dispatch(
       loadMovie({
@@ -58,12 +53,17 @@ export const asyncSearchMoviesAction = (query) => async (dispatch) => {
   }
 };
 
-export const asyncSortMoviesAction = (query) => async (dispatch) => {
+export const asyncSortMoviesAction = () => async (dispatch,getState) => {
   try {
+    const state=getState();
+    const {searchQuery,order,page,limit,filters}=state.movies;
+    
+    
     
     const res = await axios.get("/movies/sort", {
-      params: { ...query },
+      params: { search:searchQuery,order:order,page:page,limit:limit ,...filters},
     });
+
 
     dispatch(
       loadMovie({
@@ -79,7 +79,20 @@ export const asyncSortMoviesAction = (query) => async (dispatch) => {
 };
 
 //admin
+export const asyncLoadMovieByIdAction = (id) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/movies/${id}`);
+  
 
+    dispatch(
+      updateMovie({
+        selectedMovie: res?.data,
+      }),
+    );
+  } catch (error) {
+    console.log("Error fetching movie by ID:", error);
+  }
+};
 export const asyncCreateMovieAction = (data) => async () => {
   try {
     await axios.post("/movies", data, { withCredentials: true });

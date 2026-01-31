@@ -1,4 +1,4 @@
-import  { memo, useState } from "react";
+import { memo, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -17,24 +17,20 @@ import AuthButton2 from "./authComponents/AuthButton2.jsx";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { SortControls } from "./SortControls.jsx";
-import Button  from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setOrder } from "../redux/features/movieSlice.js";
 
-
-const Navbar = ({
-  isAuthenticated,
-  role
-}) => {
+const Navbar = ({ isAuthenticated, role }) => {
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
+  const [sort, setSort] = useState(false);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
- 
-  
-
-  
+  const dispatch = useDispatch();
 
   const drawer = (
     <Box sx={{ width: 250 }} onClick={setFilterDrawerOpen}>
@@ -45,15 +41,16 @@ const Navbar = ({
     </Box>
   );
 
-
-
+  const sortHandler = () => {
+    setSort(!sort);
+    
+    dispatch(setOrder(sort));
+  };
 
   return (
     <>
       <AppBar position="sticky" sx={{ bgcolor: "#121212" }} elevation={1}>
         <Toolbar sx={{ gap: 2 }}>
-        
-
           {/* Logo */}
           <MovieIcon sx={{ color: "error.main" }} />
           <Typography variant="h6" sx={{ fontWeight: 700 }}>
@@ -62,98 +59,96 @@ const Navbar = ({
 
           {/* Search Bar */}
           <SearchBox
-           
             isMobile={isMobile}
             setFilterDrawerOpen={setFilterDrawerOpen}
           />
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
-  <Button
-    variant="contained"
-    color="error"
-    disabled={role !== "admin"}
-    onClick={() => navigate("/admin/create-movie")}
-    sx={{
-      fontWeight: 700,
-      textTransform: "none",
-      px: 3,
-      py: 1.2,
-      borderRadius: 2,
-      boxShadow: 3,
-      "&:hover": {
-        boxShadow: 6,
-      },
-      "&.Mui-disabled": {
-        backgroundColor: "#444",
-        color: "#aaa",
-      },
-    }}
-  >
-    Create Movie
-  </Button>
-</Box>
-
-
+            <Button
+              variant="contained"
+              color="error"
+              disabled={role !== "admin"}
+              onClick={() => navigate("/admin/create-movie")}
+              sx={{
+                fontWeight: 700,
+                textTransform: "none",
+                px: 3,
+                py: 1.2,
+                borderRadius: 2,
+                boxShadow: 3,
+                "&:hover": {
+                  boxShadow: 6,
+                },
+                "&.Mui-disabled": {
+                  backgroundColor: "#444",
+                  color: "#aaa",
+                },
+              }}
+            >
+              Create Movie
+            </Button>
+          </Box>
 
           {/* Desktop Auth Buttons */}
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
-            <AuthButtons isAuthenticated={isAuthenticated}/>
+            <AuthButtons isAuthenticated={isAuthenticated} />
           </Box>
         </Toolbar>
       </AppBar>
 
       {/* Mobile Drawer */}
       <Drawer
-  anchor="right"
-  open={filterDrawerOpen}
-  onClose={() => setFilterDrawerOpen(false)}
->
-  <Box
-    sx={{
-      width: 260,
-      p: 2,
-      bgcolor: "#121212",
-      height: "100%",
-      color: "#fff",
-      display: "flex",
-      flexDirection: "column",
-      gap: 2,
-    }}
-  >
-    {isMobile && drawer}
+        anchor="right"
+        open={filterDrawerOpen}
+        onClose={() => setFilterDrawerOpen(false)}
+      >
+        <Box
+          sx={{
+            width: 260,
+            p: 2,
+            bgcolor: "#121212",
+            height: "100%",
+            color: "#fff",
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
+          {isMobile && drawer}
 
-    {/* 🔴 Create Movie Button (Mobile) */}
-    <Button
-      variant="contained"
-      color="error"
-      fullWidth
-      startIcon={<AddIcon />}
-      disabled={role !== "admin"}
-      onClick={() => {
-        navigate("/admin/create-movie");
-        setFilterDrawerOpen(false); // close drawer after click
-      }}
-      sx={{
-        fontWeight: 700,
-        textTransform: "none",
-        py: 1.2,
-        borderRadius: 2,
-        boxShadow: 3,
-        "&:hover": { boxShadow: 6 },
-        "&.Mui-disabled": {
-          backgroundColor: "#444",
-          color: "#aaa",
-        },
-      }}
-    >
-      Create Movie
-    </Button>
+          {/* 🔴 Create Movie Button (Mobile) */}
+          <Button
+            variant="contained"
+            color="error"
+            fullWidth
+            startIcon={<AddIcon />}
+            disabled={role !== "admin"}
+            onClick={() => {
+              navigate("/admin/create-movie");
+              setFilterDrawerOpen(false); // close drawer after click
+            }}
+            sx={{
+              fontWeight: 700,
+              textTransform: "none",
+              py: 1.2,
+              borderRadius: 2,
+              boxShadow: 3,
+              "&:hover": { boxShadow: 6 },
+              "&.Mui-disabled": {
+                backgroundColor: "#444",
+                color: "#aaa",
+              },
+            }}
+          >
+            Create Movie
+          </Button>
 
-    <SortControls />
+          <Button onClick={sortHandler}>hello</Button>
 
-    <Divider sx={{ my: 2, bgcolor: "#333" }} />
-  </Box>
-</Drawer>
+          <SortControls />
 
+          <Divider sx={{ my: 2, bgcolor: "#333" }} />
+        </Box>
+      </Drawer>
     </>
   );
 };
