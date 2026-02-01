@@ -88,7 +88,6 @@ const Login = () => {
               type={showPassword ? "text" : "password"}
               {...register("password")}
               required
-              // helperText="Passwords must be at least 6 characters."
               slotProps={{
                 input: {
                   endAdornment: (

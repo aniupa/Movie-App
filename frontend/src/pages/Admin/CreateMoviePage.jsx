@@ -23,7 +23,7 @@ export default function CreateMoviePage() {
       duration: "",
       imgUrl: "",
     },
-    mode: "onBlur", // better performance than onChange
+    mode: "onBlur", 
   });
 
   const onSubmit = async (data) => {

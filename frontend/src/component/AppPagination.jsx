@@ -15,8 +15,6 @@ export default function AppPagination({
         onChange={onChange}
         color="primary"
         size="large"
-        // showFirstButton
-        // showLastButton
       />
     </Stack>
   );

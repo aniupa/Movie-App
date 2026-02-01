@@ -87,7 +87,7 @@ const MovieCard = ({ movie }) => {
               {movie?.description}
             </Typography>
           </Box>
-          {/* Rating  */}
+          
           <Box
             textAlign={{ xs: "left", sm: "right" }}
             width={{ xs: "100%", sm: "auto" }}

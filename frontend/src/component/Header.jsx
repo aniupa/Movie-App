@@ -17,27 +17,34 @@ const Header = () => {
 
     >
       {/* Hero Image */}
+     
       <picture>
-        <source srcSet="/hero.avif" type="image/avif" />
-        <source srcSet="/hero.webp" type="image/webp" />
-        <img
-          src="/hero.jpg"
-          alt="hero image background"
-          loading="eager"
-          fetchPriority="high"
-          width="1920"
-          height="900"
-          sizes="100vw"
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            top: 0,
-            left: 0,
-          }}
-        />
-      </picture>
+  <source
+    srcSet="/hero-640.avif 640w, /hero-1280.avif 1280w, /hero-1920.avif 1920w"
+    type="image/avif"
+    sizes="100vw"
+  />
+  <source
+    srcSet="/hero-640.webp 640w, /hero-1280.webp 1280w, /hero-1920.webp 1920w"
+    type="image/webp"
+    sizes="100vw"
+  />
+  <img
+    src="/hero-1280.webp"   
+    alt="Streaming entertainment background"
+    loading="eager"
+    fetchPriority="high"
+    style={{
+      position: "absolute",
+      width: "100%",
+      height: "100%",
+      objectFit: "cover",
+      top: 0,
+      left: 0,
+    }}
+  />
+</picture>
+
 
       {/* Dark Overlay */}
       <Box
