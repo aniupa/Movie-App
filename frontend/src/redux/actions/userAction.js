@@ -1,8 +1,7 @@
 import axios from "../../utlits/axios.js";
 
 import { toast } from "react-toastify";
-// import { useDispatch } from "react-redux";
-import { logoutUser,loadUser } from "../features/UserSlice.js";
+import { logoutUser, loadUser } from "../features/UserSlice.js";
 
 export const asyncRegisterUser = (data) => async () => {
   try {
@@ -17,46 +16,31 @@ export const asyncRegisterUser = (data) => async () => {
   }
 };
 export const asyncLoginUser = (data) => async (dispatch) => {
-  try {
-    const response = await axios.post("/auth/user/login", data, {
-      withCredentials: true,
-    });
-    dispatch(asyncCurrentUser(response.data.user));
-    
-    toast.success("Login successful");
-  } catch (error) {
-    if (error?.response?.status === 401) {
-      toast.error("Invalid credentials");
-    } else {
-      console.log(error);
-    }
-  }
-}
+  const response = await axios.post("/auth/user/login", data, {
+    withCredentials: true,
+  });
+
+  dispatch(asyncCurrentUser(response.data.user));
+  return response.data;
+};
 
 export const asyncCurrentUser = () => async (dispatch) => {
   try {
-
     const res = await axios.get("/auth/user/currentUser", {
-      withCredentials: true, // 🔥 sends cookie
+      withCredentials: true,
     });
-    
 
     dispatch(loadUser(res.data.user));
-  } catch (error) {
-    console.log("Error fetching current user:", error);
+  } catch (err) {
+    console.error("Auth check failed:", err);
   }
-}
+};
 export const asyncLogoutUserAction = () => async (dispatch) => {
   try {
-    await axios.get(
-      "/auth/logout"
-      
-    );
+    await axios.get("/auth/logout");
     dispatch(logoutUser(null));
-    // dispatch(logoutUser(null));
-    // dispatch({ type: "LOGOUT_USER" });
     toast.success("Logout successful");
   } catch (error) {
     console.log("Error during logout:", error);
   }
-}
+};

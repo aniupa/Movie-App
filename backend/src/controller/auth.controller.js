@@ -63,6 +63,7 @@ if (!username || !email || !password) {
 
 export async function loginUserController(req, res, next) {
   try {
+    
     const { email, password } = req.body;
     const user = await userModel.findOne({ email }).select("+password");
 
@@ -84,10 +85,10 @@ export async function loginUserController(req, res, next) {
   sameSite: "none"     
 });
 
+
     res.status(200).json({
       success: true,
       user: {
-        // id: user._id,
         name: user.username,
         email: user.email,
         role: user.role,
@@ -113,6 +114,6 @@ export async function currentUserController(req, res, next) {
       user: req.user,
     });
   } catch (error) {
-    next(error);
+    throw new ApiError(204);
   }
 }

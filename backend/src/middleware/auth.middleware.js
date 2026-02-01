@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { userModel } from "../models/user.model.js";
+import { ApiError } from "../utlis/ApiError.js";
 dotenv.config();
 
 export const auth = async (req, res, next) => {
@@ -8,25 +9,51 @@ export const auth = async (req, res, next) => {
     const token = req.cookies?.token;
 
     if (!token) {
-      return res.status(401).json({ message: "Unauthorized: No token" });
+      throw new ApiError(401, 'unauthorized: No token provided" ');
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await userModel.findById(decoded.id)
-      .select("-password -createdAt -updatedAt -__v") 
-      .lean(); 
+    const user = await userModel
+      .findById(decoded.id)
+      .select("-password -createdAt -updatedAt -__v")
+      .lean();
     if (!user) {
-      return res.status(401).json({ message: "Unauthorized: User not found" });
+      throw new ApiError(401, "Unauthorized: User not found");
     }
 
     req.user = user;
 
     next();
   } catch (error) {
-    return res.status(401).json({
-      message: "Unauthorized: Invalid or expired token",
-    });
+    if (error.name === "JsonWebTokenError") {
+      return next(new ApiError(401, "Invalid token."));
+    }
+    return next(new ApiError(401, "Unauthorized access"));
+  }
+};
+
+export const isCurrentUser = async (req, res, next) => {
+  try {
+    const token = req.cookies?.token;
+
+    if (!token) {
+      return next();
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await userModel
+      .findById(decoded.id)
+      .select("-password -createdAt -updatedAt -__v")
+      .lean();
+    if (user) {
+      req.user = user;
+    }
+
+    next();
+  } catch {
+    next();
   }
 };
 
@@ -39,9 +66,6 @@ export const isAdmin = (req, res, next) => {
     }
     next();
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Admin middleware error",
-    });
+    next(error);
   }
 };

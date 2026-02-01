@@ -16,6 +16,7 @@ import { asyncLoginUser } from "./../../../redux/actions/userAction";
 
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,13 +24,18 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
 
- const submitHandler = async (data) => {
+  const submitHandler = async (data) => {
     try {
-
-      dispatch(asyncLoginUser(data));
+      const res = await dispatch(asyncLoginUser(data));
+      toast.success("Login successful");
       navigate("/");
     } catch (error) {
-      console.log(error);
+      const message =
+        error.response?.status === 401
+          ? "Invalid credentials"
+          : "Something went wrong";
+
+      toast.error(message);
     }
   };
 
@@ -45,7 +51,6 @@ const Login = () => {
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "rgba(0,0,0,0.04)",
-        
       }}
     >
       <Card sx={{ width: 380, boxShadow: 3 }}>

@@ -1,33 +1,62 @@
-
-import Typography from "@mui/material/Typography";  
+import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+
 const Header = () => {
   return (
-    //her section 
-     <>
+    <Box
+      sx={{
+        position: "relative",
+        height: { xs: 220, md: 300 },
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "#fff",
+        textAlign: "center",
+        overflow: "hidden",
+      }}
+    >
+      {/* Hero Image */}
+      <picture>
+        <source srcSet="/hero.avif" type="image/avif" />
+        <source srcSet="/hero.webp" type="image/webp" />
+        <img
+          src="/hero.jpg"
+          alt="Streaming entertainment background"
+          loading="eager"
+          fetchPriority="high"
+          width="1920"
+          height="900"
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            top: 0,
+            left: 0,
+          }}
+        />
+      </picture>
+
+      {/* Dark Overlay */}
       <Box
         sx={{
-          height: 300,
-          backgroundImage:
-            "url(https://images.unsplash.com/photo-1524985069026-dd778a71c7b4)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#fff",
-          textAlign: "center",
+          position: "absolute",
+          inset: 0,
+          background: "rgba(0,0,0,0.6)",
         }}
-      >
-        <Box sx={{ background: "rgba(0,0,0,0.6)", p: 4, borderRadius: 2 }}>
-          <Typography variant="h3" fontWeight="bold">
-            Unlimited Movies, TV Shows & More
-          </Typography>
-          <Typography variant="h6" sx={{ mt: 1 }}>
-            Watch anywhere. Cancel anytime.
-          </Typography>
-        </Box>
+      />
+
+      {/* Content */}
+      <Box sx={{ position: "relative", zIndex: 1, p: 3 }}>
+        <Typography variant="h3" fontWeight="bold">
+          Unlimited Movies, TV Shows & More
+        </Typography>
+        <Typography variant="h6" sx={{ mt: 1 }}>
+          Watch anywhere. Cancel anytime.
+        </Typography>
       </Box>
-      </>
-  )}
+    </Box>
+  );
+};
+
 export default Header;
