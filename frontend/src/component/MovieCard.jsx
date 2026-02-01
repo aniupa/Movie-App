@@ -8,28 +8,16 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Button from "@mui/material/Button";
 
 import StarIcon from "@mui/icons-material/Star";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { useDispatch } from "react-redux";
-import { asyncDeleteMovieAction } from "../redux/actions/movies.action";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-const MovieCard = ({ movie, rank }) => {
+import { lazy, Suspense } from "react";
+const AdminActions = lazy(() => import("./authComponents/AdminActions"));
+const MovieCard = ({ movie }) => {
   const [showActions, setShowActions] = useState(false);
-  const dispatch = useDispatch();
   const isAdmin = useSelector((state) => state?.user?.data?.role === "admin");
-
-  const { page, limit } = useSelector((state) => state.movies);
-  const Navigate = useNavigate();
-  const deleteHandler = () => {
-    dispatch(asyncDeleteMovieAction({ id: movie._id, page, limit }));
-  };
-  const updateHandler = () => {
-    Navigate(`/admin/update-movie/${movie._id}`);};
 
   return (
     <Card
@@ -72,18 +60,6 @@ const MovieCard = ({ movie, rank }) => {
           spacing={2}
           alignItems={{ xs: "flex-start", sm: "flex-start" }}
         >
-          {/* Rank */}
-          <Typography
-            variant="h6"
-            sx={{
-              color: "gray",
-              fontWeight: 700,
-              minWidth: { sm: 28 },
-            }}
-          >
-            #{rank}
-          </Typography>
-          {/* Main Info */}
           <Box flex={1} width="100%">
             <Typography variant="subtitle1" fontWeight={700} noWrap>
               {movie?.title}
@@ -133,7 +109,7 @@ const MovieCard = ({ movie, rank }) => {
               <IconButton
                 size="small"
                 sx={{ color: "primary.main" }}
-                 disabled={!isAdmin}
+                disabled={!isAdmin}
                 onClick={() => setShowActions((prev) => !prev)}
               >
                 <EditIcon />
@@ -141,28 +117,10 @@ const MovieCard = ({ movie, rank }) => {
             </Stack>
             {showActions && (
               <Stack direction="row" spacing={1} mt={1}>
-                {" "}
-                <Button
-                  size="small"
-                  variant="outlined"
-                  color="error"
-                  startIcon={<DeleteIcon />}
-                  
-                  disabled={!isAdmin}
-                  onClick={deleteHandler}
-                >
+                <Suspense fallback={null}>
                   {" "}
-                  Delete{" "}
-                </Button>{" "}
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="primary"
-                  disabled={!isAdmin}
-                  onClick={updateHandler}
-                >
-                  Update
-                </Button>
+                  <AdminActions movie={movie} isAdmin={isAdmin} />
+                </Suspense>
               </Stack>
             )}
           </Box>

@@ -14,6 +14,7 @@ const Header = () => {
         textAlign: "center",
         overflow: "hidden",
       }}
+
     >
       {/* Hero Image */}
       <picture>
@@ -21,11 +22,12 @@ const Header = () => {
         <source srcSet="/hero.webp" type="image/webp" />
         <img
           src="/hero.jpg"
-          alt="Streaming entertainment background"
+          alt="hero image background"
           loading="eager"
           fetchPriority="high"
           width="1920"
           height="900"
+          sizes="100vw"
           style={{
             position: "absolute",
             width: "100%",
