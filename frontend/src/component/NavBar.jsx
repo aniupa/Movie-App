@@ -20,11 +20,10 @@ import { SortControls } from "./SortControls.jsx";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setOrder } from "../redux/features/movieSlice.js";
 
 const Navbar = ({ isAuthenticated, role }) => {
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
-  const [sort, setSort] = useState(false);
+
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -41,11 +40,7 @@ const Navbar = ({ isAuthenticated, role }) => {
     </Box>
   );
 
-  const sortHandler = () => {
-    setSort(!sort);
-    
-    dispatch(setOrder(sort));
-  };
+  
 
   return (
     <>
@@ -142,7 +137,6 @@ const Navbar = ({ isAuthenticated, role }) => {
             Create Movie
           </Button>
 
-          <Button onClick={sortHandler}>hello</Button>
 
           <SortControls />
 

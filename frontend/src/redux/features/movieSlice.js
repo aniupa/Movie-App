@@ -8,7 +8,7 @@ export const movieSlice = createSlice({
     page: 1,
     limit: 8,
     searchQuery: null,
-    selectedMovie: [],
+    selectedMovie: [],order:true,
     filters:{},
   },
   reducers: {
