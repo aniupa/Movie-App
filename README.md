@@ -8,6 +8,10 @@ Great idea — a solid README will score you major points in evaluation. Here’
 
 A full-stack movie management system built using the **MERN stack** with **JWT authentication**, **admin role control**, and a **Redis-powered distributed queue** for scalable data insertion.
 
+🔗 **Live Demo:** https://movieapp-vert-tau.vercel.app  
+📦 **Backend API:** https://movie-app-y9ax.onrender.com  
+🧠 **Tech Stack:** React | Node | Express | MongoDB | Redis
+
 ---
 
 ## 🚀 Features
