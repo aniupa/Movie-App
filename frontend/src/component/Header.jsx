@@ -19,7 +19,7 @@ const Header = () => {
       {/* Hero Image */}
      
       <picture>
-  <source
+  <source    
     srcSet="/hero-640.avif 640w, /hero-1280.avif 1280w, /hero-1920.avif 1920w"
     type="image/avif"
     sizes="100vw"

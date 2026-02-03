@@ -2,10 +2,103 @@
   margin: 0;
   padding: 0%;
   box-sizing: border-box;
-  font-family: 'roboto',sans-serif;
+  
   
 }
 body{
   
    background: rgba(0,0,0,0.6);
+   font-family: 'roboto',sans-serif;
+   
+   color: var(--text--pri);
+}
+
+:root {
+  /*  bg colors*/
+
+  --bg--pri:#121212;
+  --bg--sec:#666666;
+  --bg--accent:#1e1e1e;
+  --bg--active:#121212; /*don't know where to use this*/
+  --bg--success:#f5c518;
+  --bg--danger:#c62828;
+
+  /*  card colors*/
+
+  --card--pri:#666666;
+  --card--sec:#121212;
+  --card--active:#121212; /*don't know where to use this*/
+  --card--success:#f5c518;
+  --card--danger:#c62828;
+  
+  
+  /*  text colors*/
+
+  --text--pri:#ffffff;
+  --text--sec:#aaaaaa;
+  --text--active:#6b6b6b; /*don't know where to use this*/
+   --text--muted:#aaaaaa;
+  /*--text--danger--color:#c62828; */
+
+  /* padding */
+  --padding-sm:0.5rem;
+  --padding-md:1rem;
+  --padding-lg:1.5rem;
+  --padding-xl:2.0rem;
+  --padding-2xl:3rem;
+
+  /* margin */
+  --margin-sm:0.5rem;
+  --margin-md:1rem;
+  --margin-lg:1.5rem;
+  --margin-xl:2.0rem;
+  --margin-2xl:3rem;
+
+  /* gutter */
+  --gutter-sm:0.5rem;
+  --gutter-md:1rem;
+  --gutter-lg:1.5rem;
+  --gutter-xl:2.0rem;
+  --gutter-2xl:3rem;
+
+  /* padding */
+  --font-sm:0.8rem;
+  --font-md:1rem;
+  --font-lg:1.125rem;
+  --font-xl:1.25rem;
+  --font-2xl:1.5rem;
+
+  /* border-radius */
+  --border-radius-sm:0.2rem;
+  --border-radius-md:0.25rem;
+  --border-radius-lg:0.3rem;
+  --border-radius-xl:0.4rem;
+  --border-radius-2xl:0.5rem;
+
+
+  /* 🎨 Brand Colors */
+  /* --color-primary: #e50914;       /* Netflix-style red */
+  /* --color-primary-hover: #f6121d;  */
+
+  --color-bg-main: #141414;       /* Page background */
+  --color-bg-card: #1f1f1f;       /* Movie cards */
+  --color-bg-elevated: #2a2a2a;   /* Modals / hover */
+
+  --color-text-main: #ffffff;
+  --color-text-muted: #b3b3b3;
+  --color-border: #333333;
+
+  /* ⭐ Ratings */
+  --color-rating: #f5c518;        /* IMDb yellow */
+
+
+
+
+  /* 🌫 Shadows */
+  --shadow-card: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-hover: 0 8px 20px rgba(0,0,0,0.6);
+
+  /* ⚡ Transitions */
+  --transition-fast: 0.2s ease-in-out;
+  --transition-smooth: 0.35s ease;
 }

@@ -1,5 +1,5 @@
 import MainRoutes from "./routes/MainRoutes";
-import Navbar from "./component/NavBar.jsx";
+import Navbar from "./component/Navbar/NavBar.jsx";
 import { asyncCurrentUser } from "./redux/actions/userAction.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";

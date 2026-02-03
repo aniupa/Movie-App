@@ -1,0 +1,34 @@
+.container {
+  background: var(--bg--pri);
+  padding: .5rem var(--padding-sm);
+  width: 100%;
+  display: flex;
+  gap: var(--gutter-sm);
+  justify-content: space-between;
+}
+.container span {
+  display: flex;
+  gap: var(--gutter-sm);
+  font-size: clamp(var(--font-sm), calc(1rem + 2vw), var(--font-xl));
+  font-weight: bold;
+}
+.container span i {
+  color: red;
+
+}
+.icon{
+    color: red;
+}
+.container .btn-container {
+  display: flex;
+  gap: var(--gutter-2xl);
+  display: none;
+
+}
+@media (min-width: 786px) {
+ 
+  .container .btn-container {
+    display: block;
+  }
+
+}

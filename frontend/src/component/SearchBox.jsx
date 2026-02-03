@@ -25,7 +25,7 @@ const SearchBox = ({
           flexGrow: 1,
           display: "flex",
           alignItems: "center",
-          bgcolor: "#1e1e1e",
+          bgcolor: "var(--bg--accent)",
           px: 2,
           py: 0.5,
           borderRadius: 2,
