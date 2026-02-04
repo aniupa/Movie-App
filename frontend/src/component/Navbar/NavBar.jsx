@@ -38,7 +38,7 @@ const Navbar = ({ isAuthenticated, role }) => {
 
   return (
     <>
-      <nav class="container">
+      <nav className="container">
         {/*  logo area */}
         <span>
           <svg
@@ -60,7 +60,7 @@ const Navbar = ({ isAuthenticated, role }) => {
           setFilterDrawerOpen={setFilterDrawerOpen}
         />
         
-        <div class="btn-container">
+        <div className="btn-container">
           {" "}
           <Button
             variant="contained"
@@ -85,7 +85,7 @@ const Navbar = ({ isAuthenticated, role }) => {
           >
             Create Movie
           </Button>
-          <AuthButtons />
+          <AuthButtons isAuthenticated={isAuthenticated}/>
         </div>
 
       </nav>

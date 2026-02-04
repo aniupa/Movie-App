@@ -8,8 +8,9 @@
 body{
   
    background: rgba(0,0,0,0.6);
-   font-family: 'roboto',sans-serif;
-   
+   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+   font-size: clamp(var(--font-sm) ,calc(var(--font-sm + 1vw),var(--font-xl)));
    color: var(--text--pri);
 }
 

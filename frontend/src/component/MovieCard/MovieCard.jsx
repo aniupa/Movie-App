@@ -6,7 +6,6 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
-import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
 
 import StarIcon from "@mui/icons-material/Star";
@@ -14,7 +13,10 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { useSelector } from "react-redux";
 import { lazy, Suspense } from "react";
-const AdminActions = lazy(() => import("./authComponents/AdminActions"));
+/*css */
+import "./style.css";
+
+const AdminActions = lazy(() => import("../authComponents/AdminActions"));
 const MovieCard = ({ movie }) => {
   const [showActions, setShowActions] = useState(false);
   const isAdmin = useSelector((state) => state?.user?.data?.role === "admin");
@@ -87,7 +89,7 @@ const MovieCard = ({ movie }) => {
               {movie?.description}
             </Typography>
           </Box>
-          
+
           <Box
             textAlign={{ xs: "left", sm: "right" }}
             width={{ xs: "100%", sm: "auto" }}
@@ -100,20 +102,24 @@ const MovieCard = ({ movie }) => {
               <IconButton size="small" sx={{ color: "#f5c518" }}>
                 <BookmarkBorderIcon />
               </IconButton>
-
               <IconButton size="small" sx={{ color: "error.main" }}>
                 <PlayArrowIcon />
               </IconButton>
-
               {/* Edit Button */}
-              <IconButton
-                size="small"
-                sx={{ color: "primary.main" }}
-                disabled={!isAdmin}
+              <span
+                className="EditIcon"
                 onClick={() => setShowActions((prev) => !prev)}
+                style={!isAdmin ? { display: "none" } : { display: "block" }}
               >
-                <EditIcon />
-              </IconButton>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  width="20px"
+                >
+                  <path d="M7.24264 17.9967H3V13.754L14.435 2.319C14.8256 1.92848 15.4587 1.92848 15.8492 2.319L18.6777 5.14743C19.0682 5.53795 19.0682 6.17112 18.6777 6.56164L7.24264 17.9967ZM3 19.9967H21V21.9967H3V19.9967Z"></path>
+                </svg>
+              </span>
             </Stack>
             {showActions && (
               <Stack direction="row" spacing={1} mt={1}>

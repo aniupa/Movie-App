@@ -1,15 +1,17 @@
-import Grid from "@mui/material/Grid";
-import MovieCard from "./MovieCard.jsx";
+import MovieCard from "./MovieCard/MovieCard.jsx";
 
 const MovieGrid = ({ movies }) => {
-  
   return (
-    <Grid container spacing={1}>
-      { movies && movies.map((movie, i) => (
-        
-        <MovieCard key={movie._id} movie={movie} />
-      ))}
-    </Grid>
+    <section
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "var(--gutter-sm)",
+      }}
+    >
+      {movies &&
+        movies.map((movie, i) => <MovieCard key={movie._id} movie={movie} />)}
+    </section>
   );
 };
 
