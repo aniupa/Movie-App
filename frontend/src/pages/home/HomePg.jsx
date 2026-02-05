@@ -1,5 +1,3 @@
-
-
 import { useDispatch, useSelector } from "react-redux";
 import { asyncSearchMoviesAction } from "../../redux/actions/movies.action.js";
 import { setPage } from "../../redux/features/movieSlice.js";
@@ -32,16 +30,22 @@ export default function Movies() {
 
       {/* Movie List */}
       <div className="container">
-        <span style={{ textAlign: "left",width:'100%' ,padding:'var(--padding-sm)' }}>
+        <span
+          style={{
+            textAlign: "left",
+            width: "100%",
+            padding: "var(--padding-sm)",
+          }}
+        >
           <h5>Popular Movies</h5>
         </span>
-        <Suspense>
+        <Suspense fallback={null}>
           <MovieGrid movies={movieCollection} />
           <AppPagination
             page={page}
-            count={Math.ceil(total / limit)}
+            count={Math.max(1, Math.ceil((total || 0) / (limit || 1)))}
             onChange={handlePageChange}
-            
+            sx={{ bgcolor: "transparent" }}
           />
         </Suspense>
       </div>

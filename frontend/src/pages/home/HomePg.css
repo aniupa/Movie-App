@@ -4,6 +4,8 @@
     flex-direction: column;
     height: auto;
     width: 100%;
+    /* background: var(--bg--pri); */
+
 }
 h5{
     font-weight: bolder;
@@ -15,5 +17,6 @@ h5{
     .container{
         
     padding: 0 var(--padding-8xl);
+    /* background: var(--bg--accent); */
     }
 }
