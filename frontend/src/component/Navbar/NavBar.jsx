@@ -16,7 +16,7 @@ import { SortControls } from "../SortControls.jsx";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import "./style.css";
+import "./navbar.css";
 
 const Navbar = ({ isAuthenticated, role }) => {
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
@@ -38,7 +38,7 @@ const Navbar = ({ isAuthenticated, role }) => {
 
   return (
     <>
-      <nav className="container">
+      <nav >
         {/*  logo area */}
         <span>
           <svg
@@ -60,7 +60,7 @@ const Navbar = ({ isAuthenticated, role }) => {
           setFilterDrawerOpen={setFilterDrawerOpen}
         />
         
-        <div className="btn-container">
+        <div className="btn-nav">
           {" "}
           <Button
             variant="contained"

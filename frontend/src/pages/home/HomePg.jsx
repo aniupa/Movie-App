@@ -1,5 +1,4 @@
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+
 
 import { useDispatch, useSelector } from "react-redux";
 import { asyncSearchMoviesAction } from "../../redux/actions/movies.action.js";
@@ -10,8 +9,8 @@ import { lazy, Suspense } from "react";
 const MovieGrid = lazy(() => import("../../component/MovieGrid.jsx"));
 const AppPagination = lazy(() => import("../../component/AppPagination.jsx"));
 
-import Header from "../../component/Header.jsx";
-
+import Header from "../../component/header/Header.jsx";
+import "./HomePg.css";
 export default function Movies() {
   const dispatch = useDispatch();
   const { movieCollection, total, page, limit, filters, searchQuery, order } =
@@ -32,19 +31,20 @@ export default function Movies() {
       <Header />
 
       {/* Movie List */}
-      <Container sx={{ py: 5 }}>
-        <Typography variant="h5" fontWeight="bold" gutterBottom>
-          Popular Movies
-        </Typography>
+      <div className="container">
+        <span style={{ textAlign: "left",width:'100%' ,padding:'var(--padding-sm)' }}>
+          <h5>Popular Movies</h5>
+        </span>
         <Suspense>
           <MovieGrid movies={movieCollection} />
           <AppPagination
             page={page}
             count={Math.ceil(total / limit)}
             onChange={handlePageChange}
+            
           />
         </Suspense>
-      </Container>
+      </div>
     </>
   );
 }

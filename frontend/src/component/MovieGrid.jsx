@@ -7,6 +7,7 @@ const MovieGrid = ({ movies }) => {
         display: "flex",
         flexDirection: "column",
         gap: "var(--gutter-sm)",
+        width: "100%",
       }}
     >
       {movies &&

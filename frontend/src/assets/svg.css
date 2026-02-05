@@ -1,0 +1,19 @@
+.EditIcon {
+  padding-top: var(--padding-sm);
+  color: grey;
+  border-radius: 50%;
+  width: 20px;
+}
+
+.playArrowIcon {
+  padding-top: var(--padding-sm);
+  color: red;
+  border-radius: 50%;
+  width: 20px;
+}
+.bookmarkBorderIcon {
+  padding-top: var(--padding-sm);
+  color: yellow;
+  border-radius: 50%;
+  width: 20px;
+}

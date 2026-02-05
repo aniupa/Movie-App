@@ -1,0 +1,19 @@
+.container{
+    padding: 0 var(--padding-sm);
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+}
+h5{
+    font-weight: bolder;
+    font-size: var(--font-2xl);
+    
+}
+
+@media (min-width:786px) {
+    .container{
+        
+    padding: 0 var(--padding-8xl);
+    }
+}

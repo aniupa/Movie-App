@@ -1,33 +1,35 @@
-.container {
+nav {
   background: var(--bg--pri);
   padding: .5rem var(--padding-sm);
   width: 100%;
   display: flex;
   gap: var(--gutter-sm);
   justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
-.container span {
+nav span {
   display: flex;
   gap: var(--gutter-sm);
   font-size: clamp(var(--font-sm), calc(1rem + 2vw), var(--font-xl));
   font-weight: bold;
 }
-.container span i {
+nav span i {
   color: red;
 
 }
 .icon{
     color: red;
 }
-.container .btn-container {
+nav .btn-nav {
   display: flex;
   gap: var(--gutter-2xl);
   display: none;
 
 }
 @media (min-width: 786px) {
- 
-  .container .btn-container {
+  nav .btn-nav {
     display: block;
   }
 

@@ -1,3 +1,10 @@
+$breakpoints: (
+  "xs": 480px,
+  "sm": 768px,
+  "md": 1024px,
+  "lg": 1280px,
+  "xl": 1536px,
+);
 
 @mixin flex-center {
   display: flex;
@@ -11,10 +18,23 @@
   align-items: center;
 }
 
-
-
 @mixin card {
   background: var(--bg-white);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
+}
+
+
+@mixin responsive($size) {
+  $breakpoints: map-get(
+    $map: $breakpoints,
+    $key: $size,
+  );
+  @if $breakpoints {
+    @media (min-width: $breakpoint) {
+      @content;
+    }
+  } @else {
+    @warn 'no breakpoints found for `#{$size}.';
+  }
 }

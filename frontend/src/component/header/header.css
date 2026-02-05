@@ -1,0 +1,17 @@
+.container {
+  position: relative;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  overflow: hidden;
+  /* max-height: 420px; */
+}
+
+@media (min-width: 786px) {
+  .container{
+    height: 220px;
+  }
+}
