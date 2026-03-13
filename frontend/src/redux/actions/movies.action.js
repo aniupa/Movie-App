@@ -93,6 +93,7 @@ export const asyncLoadMovieByIdAction = (id) => async (dispatch) => {
     console.log("Error fetching movie by ID:", error);
   }
 };
+
 export const asyncCreateMovieAction = (data) => async () => {
   try {
     await axios.post("/movies", data, { withCredentials: true });

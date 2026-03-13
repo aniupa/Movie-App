@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Loader } from "../utlits/loader/loader.jsx";
 import { useSelector } from "react-redux";
+import DetailPg from "../pages/DetailPg.jsx";
 
 const Home = lazy(() => import("../pages/home/HomePg.jsx"));
 const Login = lazy(() => import("../pages/authentication/login/login.jsx"));
@@ -24,6 +25,7 @@ const MainRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/movie/detail/:id" element={<DetailPg />} />
 
         {isAdmin && (
           <>

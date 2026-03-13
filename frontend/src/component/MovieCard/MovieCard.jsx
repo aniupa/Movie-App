@@ -13,12 +13,17 @@ import { lazy, Suspense } from "react";
 /*css */
 // import "./style.css";
 import { editSvg, bookmarkBorderIcon, playArrowIcon } from "../../assets/Svg";
+import { useNavigate } from "react-router-dom";
 
 const AdminActions = lazy(() => import("../authComponents/AdminActions"));
 const MovieCard = ({ movie }) => {
+  const {_id}=movie;
+  const navigate=useNavigate();
   const [showActions, setShowActions] = useState(false);
   const isAdmin = useSelector((state) => state?.user?.data?.role === "admin");
-
+const gotoDetailPg=()=>{
+  navigate(`/movie/detail/${_id}`)
+}
   return (
     <Card
       sx={{
@@ -33,6 +38,7 @@ const MovieCard = ({ movie }) => {
         width: "100%",
       }}
       elevation={3}
+      onClick={gotoDetailPg}
     >
       {/* Poster */}
       <CardMedia

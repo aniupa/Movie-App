@@ -11,7 +11,7 @@ const MovieGrid = ({ movies }) => {
       }}
     >
       {movies &&
-        movies.map((movie, i) => <MovieCard key={movie._id} movie={movie} />)}
+        movies.map((movie, i) => <MovieCard key={movie._id} id={movie._id} movie={movie} />)}
     </section>
   );
 };

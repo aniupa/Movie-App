@@ -4,6 +4,8 @@ dotenv.config();
 
 export async function connectDB() {
   try {
+   
+    
     await mongoose.connect(process.env.MONGO_DB_URI, {
   maxPoolSize: 100,        // increase pool
   minPoolSize: 10,
