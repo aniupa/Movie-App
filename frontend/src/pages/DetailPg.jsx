@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { asyncLoadMovieByIdAction } from '../redux/actions/movies.action';
 import { useParams } from 'react-router-dom';
 import { resetMovie } from '../redux/features/movieSlice';
-import ReactPlayer from "react-player";
 const DetailPg = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
