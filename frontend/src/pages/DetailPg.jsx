@@ -6,7 +6,7 @@ import { resetMovie } from '../redux/features/movieSlice';
 import ScoreCircle from '../component/animations/ScoreCircle';
 import { playArrowIcon } from '../assets/Svg';
 import { useState } from 'react';
-const apiKey = import.meta.env.VITE_TMDB_KEY;
+const apiKey = import.meta.env.VITE_TMDB_API;
 // import Button from '../component/buttons/Button';
 const DetailPg = () => {
     const dispatch = useDispatch();
@@ -24,19 +24,21 @@ const DetailPg = () => {
 
 
     const posterUrl = `https://image.tmdb.org/t/p/w500${movie?.imgUrl}`;
+    const thumbnail = `https://api.themoviedb.org/3/movie${movie?.thumbnail}?api_key=${apiKey}`;
     // const ytVideoApi=`https://api.themoviedb.org/3/movie/${movie?.tmdb}/videos?api_key=${apiKey}`
 
     return (
 
         < >
-
+{console.log(thumbnail)
+}
 
             {/* movie hero card */}
             <section className="relative w-full min-h-screen flex items-center  overflow-hidden">
 
                 {/* 🔥 BACKDROP */}
                 <img
-                    src={`https://api.themoviedb.org/3/movie/${movie?.thumbnail}?api_key=${apiKey}`}
+                    src={thumbnail}
                     alt="backdrop"
                     className="absolute inset-0 w-full h-full object-cover scale-110 blur-md"
                 />

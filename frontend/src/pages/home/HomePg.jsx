@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { asyncSearchMoviesAction } from "../../redux/actions/movies.action.js";
-import { setPage } from "../../redux/features/movieSlice.js";
+import { resetMovie, setPage } from "../../redux/features/movieSlice.js";
 import { useEffect } from "react";
 import { lazy, Suspense } from "react";
 
@@ -16,6 +16,7 @@ export default function Movies() {
 
   useEffect(() => {
     dispatch(asyncSearchMoviesAction());
+    return ()=>dispatch(resetMovie())
   }, [page, limit, searchQuery, dispatch, filters, order]);
 
   const handlePageChange = (event, value) => {
