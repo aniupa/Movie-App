@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { asyncLoadMovieByIdAction } from '../redux/actions/movies.action';
+import { asyncLoadMovieByIdAction, loadMovieTrailerAction } from '../redux/actions/movies.action';
 import { useParams } from 'react-router-dom';
 import { resetMovie } from '../redux/features/movieSlice';
 import ScoreCircle from '../component/animations/ScoreCircle';
 import { playArrowIcon } from '../assets/Svg';
 import { useState } from 'react';
-
+const apiKey = import.meta.env.VITE_TMDB_KEY;
 // import Button from '../component/buttons/Button';
 const DetailPg = () => {
     const dispatch = useDispatch();
@@ -16,13 +16,15 @@ const DetailPg = () => {
 
     useEffect(() => {
         dispatch(asyncLoadMovieByIdAction(id))
+        if (movie) dispatch(loadMovieTrailerAction(movie?.tmdb))
         return () => {
             dispatch(resetMovie())
         }
     }, [id, dispatch])
 
 
-
+    const posterUrl = `https://image.tmdb.org/t/p/w500${movie?.imgUrl}`;
+    // const ytVideoApi=`https://api.themoviedb.org/3/movie/${movie?.tmdb}/videos?api_key=${apiKey}`
 
     return (
 
@@ -34,7 +36,7 @@ const DetailPg = () => {
 
                 {/* 🔥 BACKDROP */}
                 <img
-                    src={movie?.backdropUrl || movie?.imgUrl}
+                    src={`https://api.themoviedb.org/3/movie/${movie?.thumbnail}?api_key=${apiKey}`}
                     alt="backdrop"
                     className="absolute inset-0 w-full h-full object-cover scale-110 blur-md"
                 />
@@ -48,7 +50,7 @@ const DetailPg = () => {
                     {/* 🎬 POSTER */}
                     <div className="flex-shrink-0">
                         <img
-                            src={movie?.imgUrl}
+                            src={posterUrl}
                             alt={movie?.title}
                             className="w-72 rounded-xl shadow-2xl"
                         />

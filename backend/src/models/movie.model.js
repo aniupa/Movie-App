@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 
 const movieSchema = new mongoose.Schema(
@@ -6,13 +5,13 @@ const movieSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
-      
+
       trim: true,
     },
-
+    tmdbId: { type: String, trim: true },
     videoUrl: {
       type: String,
-      required: true,
+      // required: ,
       trim: true,
     },
 

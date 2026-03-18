@@ -2,10 +2,8 @@ import { toast } from "react-toastify";
 import axios from "../../utlits/axios";
 import { loadMovie, updateMovie } from "../features/movieSlice";
 
-
 export const asyncLoadMoviesAction = (data) => async (dispatch) => {
   try {
-    
     const res = await axios.get("/movies/", {
       params: {
         page: data?.page,
@@ -26,19 +24,20 @@ export const asyncLoadMoviesAction = (data) => async (dispatch) => {
   }
 };
 
-
-
-export const asyncSearchMoviesAction = () => async (dispatch,getState) => {
+export const asyncSearchMoviesAction = () => async (dispatch, getState) => {
   try {
-    const state=getState();
-     const {searchQuery,order,page,limit,filters}=state.movies;
-    
-    
-    
-    const res = await axios.get("/movies/search", {
-      params: { search:searchQuery,order:order,page:page,limit:limit ,...filters},
-    });
+    const state = getState();
+    const { searchQuery, order, page, limit, filters } = state.movies;
 
+    const res = await axios.get("/movies/search", {
+      params: {
+        search: searchQuery,
+        order: order,
+        page: page,
+        limit: limit,
+        ...filters,
+      },
+    });
 
     dispatch(
       loadMovie({
@@ -53,17 +52,20 @@ export const asyncSearchMoviesAction = () => async (dispatch,getState) => {
   }
 };
 
-export const asyncSortMoviesAction = () => async (dispatch,getState) => {
+export const asyncSortMoviesAction = () => async (dispatch, getState) => {
   try {
-    const state=getState();
-    const {searchQuery,order,page,limit,filters}=state.movies;
-    
-    
-    
-    const res = await axios.get("/movies/sort", {
-      params: { search:searchQuery,order:order,page:page,limit:limit ,...filters},
-    });
+    const state = getState();
+    const { searchQuery, order, page, limit, filters } = state.movies;
 
+    const res = await axios.get("/movies/sort", {
+      params: {
+        search: searchQuery,
+        order: order,
+        page: page,
+        limit: limit,
+        ...filters,
+      },
+    });
 
     dispatch(
       loadMovie({
@@ -79,10 +81,11 @@ export const asyncSortMoviesAction = () => async (dispatch,getState) => {
 };
 
 //admin
-export const  asyncLoadMovieByIdAction = (id) => async (dispatch) => {
+//older and working one with little tweaks
+export const asyncLoadMovieByIdAction = (id) => async (dispatch) => {
   try {
     const res = await axios.get(`/movies/${id}`);
-  
+
 
     dispatch(
       updateMovie({
@@ -91,6 +94,37 @@ export const  asyncLoadMovieByIdAction = (id) => async (dispatch) => {
     );
   } catch (error) {
     console.log("Error fetching movie by ID:", error);
+  }
+};
+export const loadMovieTrailerAction = (id) => async (dispatch) => {
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/${id}/videos?${import.meta.env.VITE_TMDB_API}`,
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch trailer");
+    }
+
+    const data = await response.json();
+
+   
+    let trailerData = data?.results.find((vid) => {
+      return vid.type === "Trailer" && vid.site === "YouTube" && vid.official;
+    });
+// fallback: any YouTube video
+    if (!trailerData) {
+      trailerData = data?.results.find((vid) => vid.site === "YouTube");
+    }
+    // console.log(trailerData);
+    
+    dispatch(
+      updateMovie({
+        trailer: trailerData,
+      }),
+    );
+  } catch (error) {
+    console.log("Error fetching movie videos:", error);
   }
 };
 
@@ -120,7 +154,6 @@ export const asyncUpdateMovieAction =
   async () => {
     try {
       await axios.put(`/movies/${id}`, data, { withCredentials: true });
-      
 
       toast.success("updated successfully");
     } catch (error) {

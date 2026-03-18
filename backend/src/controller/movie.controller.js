@@ -116,12 +116,12 @@ export const createMoviesController = async (req, res, next) => {
     if (!movieData || typeof movieData !== "object") {
       throw new ApiError(400, "movieData is required and must be an object");
     }
-    const result=await movieModel.create(movieData);
-    // await movieQueue.add("ADD_MOVIE", movieData);
+    // const result=await movieModel.create(movieData);
+    await movieQueue.add("ADD_MOVIE", movieData);
 
-    return res
-      .status(202)
-      .json({ success: true, message: result });
+    // return res
+    //   .status(202)
+    //   .json({ success: true, message: result });
   } catch (error) {
     next(error);
   }

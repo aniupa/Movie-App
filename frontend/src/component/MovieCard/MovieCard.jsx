@@ -43,7 +43,7 @@ const gotoDetailPg=()=>{
       {/* Poster */}
       <CardMedia
         component="img"
-        image={movie?.imgUrl}
+        image={`https://image.tmdb.org/t/p/w500${movie?.imgUrl}`}
         alt={movie?.title}
         loading="lazy"
         sx={{

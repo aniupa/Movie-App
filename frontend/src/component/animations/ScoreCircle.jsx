@@ -4,10 +4,12 @@ const ScoreCircle = ({score='100',outOFF='100'}) => {
     const radius=22;
     const circumference=2*Math.PI*radius;
     const progress=score/100;
-    const offset=circumference*(1*progress);
+    const offset=circumference*1*progress;
 
   return (
+    
     <div className='relative w-14 h-14'>
+     
          <svg className="w-14 h-14 rotate-[-90deg]">
 
         {/* background circle */}
@@ -35,7 +37,7 @@ const ScoreCircle = ({score='100',outOFF='100'}) => {
 
       </svg>
       {/* text */}
-      <span className='absolute inset-0 flex items-center justify-center text-white text-sm font-bold'>{score/outOFF*100}%</span>
+      <span className='absolute inset-0 flex items-center justify-center text-white text-sm font-bold'>{Math.round(score/outOFF*100)}%</span>
     </div>
   )
 }
