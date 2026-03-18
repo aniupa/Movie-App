@@ -111,7 +111,7 @@ const gotoDetailPg=()=>{
               {/* Edit Button */}
               <span
                 className="EditIcon"
-                onClick={() => setShowActions((prev) => !prev)}
+                onClick={(e) => {setShowActions((prev) => !prev); e.stopPropagation() }}
                 style={!isAdmin ? { display: "none" } : { display: "block" }}
               >
                 {editSvg}

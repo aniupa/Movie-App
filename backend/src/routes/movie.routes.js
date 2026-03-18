@@ -12,7 +12,7 @@ router.get("/:id",validateObjectId, getMovieByIdController);
 
 
 // admin routes
-router.post("/", auth, isAdmin, createMoviesController);
+router.post("/", createMoviesController);
 router.delete("/:id", auth, isAdmin, deleteMoviesController);
 router.put("/:id", auth, isAdmin, updateMoviesController);
 

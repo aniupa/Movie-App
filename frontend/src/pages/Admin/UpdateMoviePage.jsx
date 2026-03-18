@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 export default function UpdateMoviePage() {
   const dispatch = useDispatch();
   const movie = useSelector((state) => state.movies.selectedMovie);
-  const { data } = movie;
+
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -41,21 +41,23 @@ export default function UpdateMoviePage() {
   }, [id, dispatch]);
 
   useEffect(() => {
-    if (data) {
+    if (movie?.data) {
       reset({
-        title: data.title || "",
-        description: data.description || "",
-        rating: data.rating || "",
-        releaseYear: data.releaseYear || "",
-        duration: data.duration || "",
-        imgUrl: data.imgUrl || "",
+        title: movie?.data?.title || "",
+        description: movie?.data?.description || "",
+        rating: movie?.data?.rating || "",
+        releaseYear: movie?.data?.releaseYear || "",
+        duration: movie?.data?.duration || "",
+        imgUrl: movie?.data?.imgUrl || "",
+        videoUrl: movie?.data?.videoUrl || "",
+        thumbnail: movie?.data?.thumbnail || "",
       });
     }
-  }, [data, reset]);
+  }, [movie?.data, reset]);
 
-  const onSubmit = async (data) => {
+  const onSubmit =  (data) => {
     try {
-      await dispatch(asyncUpdateMovieAction({ data, id }));
+       dispatch(asyncUpdateMovieAction({ data, id }));
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -64,7 +66,7 @@ export default function UpdateMoviePage() {
 
   return (
     <>
-      {data ? (
+      {movie?.data ? (
         <Container maxWidth="md" sx={{ py: 5 }}>
           <Paper elevation={3} sx={{ p: 4 }}>
             <Typography variant="h4" fontWeight={600} gutterBottom>

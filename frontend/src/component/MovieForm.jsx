@@ -148,6 +148,54 @@ const MovieForm = ({ onSubmit, control, errors, isSubmitting }) => {
           />
         </Grid>
 
+        {/* thumbnail URL */}
+        <Grid item xs={12}>
+          <Controller
+            name="thumbnail"
+            control={control}
+            rules={{
+              required: "thumbnail URL required",
+              pattern: {
+                value: /^https?:\/\/.+/i,
+                message: "Enter valid URL",
+              },
+            }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="thumbnail"
+                fullWidth
+                error={!!errors.thumbnail}
+                helperText={errors.thumbnail?.message}
+              />
+            )}
+          />
+        </Grid>
+
+         {/* video URL */}
+        <Grid item xs={12}>
+          <Controller
+            name="videoUrl"
+            control={control}
+            rules={{
+              required: "video URL required",
+              pattern: {
+                value: /^https?:\/\/.+/i,
+                message: "Enter valid URL",
+              },
+            }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Trailer URL"
+                fullWidth
+                error={!!errors.videoUrl}
+                helperText={errors.videoUrl?.message}
+              />
+            )}
+          />
+        </Grid>
+
         {/* Actions */}
         <Grid item xs={12}>
           <Box display="flex" gap={2} justifyContent="flex-end">

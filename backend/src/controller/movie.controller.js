@@ -5,7 +5,7 @@ import { ApiError } from "../utlis/ApiError.js";
 
 export const getAllMoviesController = async (req, res, next) => {
   try {
-    const { page, limit,order } = req.query;
+    const { page, limit, order } = req.query;
 
     const result = await searchMoviesService({
       page,
@@ -25,7 +25,7 @@ export const getAllMoviesController = async (req, res, next) => {
 // Search movies , Get all movies, sort movies
 export const searchMoviesController = async (req, res, next) => {
   try {
-   const {
+    const {
       search,
       page,
       limit,
@@ -43,7 +43,7 @@ export const searchMoviesController = async (req, res, next) => {
       page,
       limit,
       order,
-     filters: {
+      filters: {
         yearFrom,
         yearTo,
         ratingFrom,
@@ -53,10 +53,7 @@ export const searchMoviesController = async (req, res, next) => {
       },
     });
 
-   
-    
-
-     res.status(200).json({
+    res.status(200).json({
       success: true,
       page: result.page,
       limit: result.limit,
@@ -84,9 +81,6 @@ export const sortMoviesController = async (req, res, next) => {
       durationFrom,
       durationTo,
     } = req.query;
-    
-
-    
 
     const result = await searchMoviesService({
       search,
@@ -110,7 +104,6 @@ export const sortMoviesController = async (req, res, next) => {
       total: result.total,
       totalPages: Math.ceil(result.total / result.limit),
       data: result.movies,
-     
     });
   } catch (error) {
     next(error);
@@ -123,12 +116,12 @@ export const createMoviesController = async (req, res, next) => {
     if (!movieData || typeof movieData !== "object") {
       throw new ApiError(400, "movieData is required and must be an object");
     }
-
-    await movieQueue.add("ADD_MOVIE", movieData);
+    const result=await movieModel.create(movieData);
+    // await movieQueue.add("ADD_MOVIE", movieData);
 
     return res
       .status(202)
-      .json({ success: true, message: "Movie queued for creation" });
+      .json({ success: true, message: result });
   } catch (error) {
     next(error);
   }

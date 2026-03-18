@@ -79,7 +79,7 @@ export const asyncSortMoviesAction = () => async (dispatch,getState) => {
 };
 
 //admin
-export const asyncLoadMovieByIdAction = (id) => async (dispatch) => {
+export const  asyncLoadMovieByIdAction = (id) => async (dispatch) => {
   try {
     const res = await axios.get(`/movies/${id}`);
   

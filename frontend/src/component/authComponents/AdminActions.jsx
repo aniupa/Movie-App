@@ -5,15 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { asyncDeleteMovieAction } from "../../redux/actions/movies.action";
 import { useDispatch, useSelector } from "react-redux";
 
-const AdminActions = ({ isAdmin ,movie}) => {
-    const {page,limit}=useSelector((state)=>state.movies)
-const dispatch=useDispatch();
+const AdminActions = ({ isAdmin, movie }) => {
+  const { page, limit } = useSelector((state) => state.movies)
+  const dispatch = useDispatch();
   const Navigate = useNavigate();
   const deleteHandler = () => {
     dispatch(asyncDeleteMovieAction({ id: movie._id, page, limit }));
   };
   const updateHandler = () => {
-    Navigate(`/admin/update-movie/${movie._id}`);
+    Navigate(`/admin/update-movie/${movie?._id}`);
   };
 
   return (
@@ -35,7 +35,7 @@ const dispatch=useDispatch();
         variant="contained"
         color="primary"
         disabled={!isAdmin}
-        onClick={updateHandler}
+        onClick={(e) => { e.stopPropagation(); updateHandler() }}
       >
         Update
       </Button>
