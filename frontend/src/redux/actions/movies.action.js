@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import axios from "../../utlits/axios";
-import { loadMovie, updateMovie } from "../features/movieSlice";
+import { loadMovie, updateMovie, updateTrailer } from "../features/movieSlice";
 
 export const asyncLoadMoviesAction = (data) => async (dispatch) => {
   try {
@@ -86,7 +86,6 @@ export const asyncLoadMovieByIdAction = (id) => async (dispatch) => {
   try {
     const res = await axios.get(`/movies/${id}`);
 
-
     dispatch(
       updateMovie({
         selectedMovie: res?.data,
@@ -98,9 +97,13 @@ export const asyncLoadMovieByIdAction = (id) => async (dispatch) => {
 };
 export const loadMovieTrailerAction = (id) => async (dispatch) => {
   try {
+    if (!id) {
+      return;
+    }
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${id}/videos?${import.meta.env.VITE_TMDB_API}`,
+      `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${import.meta.env.VITE_TMDB_API}`,
     );
+    console.log(response);
 
     if (!response.ok) {
       throw new Error("Failed to fetch trailer");
@@ -108,18 +111,17 @@ export const loadMovieTrailerAction = (id) => async (dispatch) => {
 
     const data = await response.json();
 
-   
     let trailerData = data?.results.find((vid) => {
       return vid.type === "Trailer" && vid.site === "YouTube" && vid.official;
     });
-// fallback: any YouTube video
+    // fallback: any YouTube video
     if (!trailerData) {
       trailerData = data?.results.find((vid) => vid.site === "YouTube");
     }
-    // console.log(trailerData);
-    
+    console.log(trailerData);
+
     dispatch(
-      updateMovie({
+      updateTrailer({
         trailer: trailerData,
       }),
     );

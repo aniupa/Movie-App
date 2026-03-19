@@ -1,37 +1,36 @@
-import React, { useEffect } from 'react'
+import  { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { asyncLoadMovieByIdAction, loadMovieTrailerAction } from '../redux/actions/movies.action';
 import { useParams } from 'react-router-dom';
 import { resetMovie } from '../redux/features/movieSlice';
 import ScoreCircle from '../component/animations/ScoreCircle';
-import { playArrowIcon } from '../assets/Svg';
 import { useState } from 'react';
+import VideoPlayer from '../component/VideoPlayer';
 const apiKey = import.meta.env.VITE_TMDB_API;
-// import Button from '../component/buttons/Button';
 const DetailPg = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const movie = useSelector((state) => state.movies?.selectedMovie?.data);
+    const trailer = useSelector((state) => state.movies?.trailer);
     const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
         dispatch(asyncLoadMovieByIdAction(id))
-        if (movie) dispatch(loadMovieTrailerAction(movie?.tmdb))
         return () => {
             dispatch(resetMovie())
         }
     }, [id, dispatch])
+    useEffect(() => {
+        if (movie?.tmdbId) dispatch(loadMovieTrailerAction(movie?.tmdbId))
+    }, [movie?.tmdbId, dispatch])
 
 
     const posterUrl = `https://image.tmdb.org/t/p/w500${movie?.imgUrl}`;
-    const thumbnail = `https://api.themoviedb.org/3/movie${movie?.thumbnail}?api_key=${apiKey}`;
-    // const ytVideoApi=`https://api.themoviedb.org/3/movie/${movie?.tmdb}/videos?api_key=${apiKey}`
-
+    const thumbnail = `https://image.tmdb.org/t/p/w500${movie?.thumbnail}`;
     return (
 
         < >
-{console.log(thumbnail)
-}
+
 
             {/* movie hero card */}
             <section className="relative w-full min-h-screen flex items-center  overflow-hidden">
@@ -85,10 +84,10 @@ const DetailPg = () => {
 
                             {/* Play button */}
                             <button
-                                onClick={() => setIsPlaying(prev => !prev)}
+                                onClick={() => setIsPlaying(true)}
                                 className="flex items-center gap-2 bg-white/10 backdrop-blur px-4 py-2 rounded-lg hover:bg-white/20 transition"
                             >
-                                ▶ {isPlaying ? "Hide Trailer" : "Play Trailer"}
+                                ▶ Play Trailer
                             </button>
 
                         </div>
@@ -106,16 +105,31 @@ const DetailPg = () => {
                             </p>
                         </div>
 
+                        {isPlaying && (
+                            <div
+                                className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur"
+                                onClick={() => setIsPlaying(false)}
+                            >
+                                <div
+                                    className="w-full max-w-5xl aspect-video"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <VideoPlayer
+                                        videoKey={trailer?.key}
+                                        poster={thumbnail}
+                                    />
+                                </div>
+
+
+                            </div>
+                        )}
                     </div>
+
                 </div>
             </section>
 
-            <div className='relative w-full max-w-2xl aspect-video'>
-                {isPlaying ? (<video className='aspect-video absolute inset-0 w-full h-full object-cover' controls autoPlay playsInline><source src={movie?.videoUrl || 'https://www.w3schools.com/html/mov_bbb.mp4'} type='video/mp4' /></video>) : (<div className='relative w-full h-full cursor-pointer'>
-                    <img src={movie?.imgUrl} alt="poster" className='w-full h-full object-cover object-center' />
 
-                </div>)}
-            </div>
+
 
         </>
     )

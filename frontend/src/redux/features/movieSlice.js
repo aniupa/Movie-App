@@ -8,7 +8,7 @@ export const movieSlice = createSlice({
     page: 1,
     limit: 8,
     searchQuery: null,
-    selectedMovie: [],
+    selectedMovie: [],trailer:[],
     order: true,
     filters: {},
   },
@@ -41,6 +41,9 @@ export const movieSlice = createSlice({
     updateMovie: (state, action) => {
       state.selectedMovie = action.payload.selectedMovie;
     },
+    updateTrailer: (state, action) => {
+      state.trailer = action.payload.trailer;
+    },
     resetMovie: (state) => {
       state.selectedMovie = null;
       state.movieCollection=null;
@@ -56,6 +59,6 @@ export const {
   setOrder,
   setPage,
   setSearchQuery,
-  updateMovie,resetMovie
+  updateMovie,resetMovie,updateTrailer
 } = movieSlice.actions;
 export default movieSlice.reducer;
