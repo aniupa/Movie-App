@@ -103,7 +103,6 @@ export const loadMovieTrailerAction = (id) => async (dispatch) => {
     const response = await fetch(
       `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${import.meta.env.VITE_TMDB_API}`,
     );
-    console.log(response);
 
     if (!response.ok) {
       throw new Error("Failed to fetch trailer");
@@ -118,7 +117,6 @@ export const loadMovieTrailerAction = (id) => async (dispatch) => {
     if (!trailerData) {
       trailerData = data?.results.find((vid) => vid.site === "YouTube");
     }
-    console.log(trailerData);
 
     dispatch(
       updateTrailer({
